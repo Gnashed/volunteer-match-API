@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace volunteerMatch.Models;
+namespace VolunteerMatch.Models;
 
 // Models/OrganizationFollower.cs
 public class OrganizationFollower

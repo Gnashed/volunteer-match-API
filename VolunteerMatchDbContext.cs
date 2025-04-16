@@ -1,6 +1,6 @@
 // Data/VolunteerMatchDbContext.cs
 using Microsoft.EntityFrameworkCore;
-using volunteerMatch.Models;
+using VolunteerMatch.Models;
 
 
 public class VolunteerMatchDbContext : DbContext

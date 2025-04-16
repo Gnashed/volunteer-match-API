@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace volunteerMatch.Models;
+namespace VolunteerMatch.Models;
 
 public class Cause
 {
