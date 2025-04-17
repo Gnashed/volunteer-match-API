@@ -1,6 +1,7 @@
 using VolunteerMatch.Data.Repositories.Interfaces;
 using VolunteerMatch.Services;
 using VolunteerMatch.Services.Interface;
+using VolunteerMatch.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Register services for repository pattern here. Dependency injection is taking place here.
-builder.Services.AddScoped<ICauseRepository, ICauseRepository>();
+builder.Services.AddScoped<ICauseRepository, CauseRepository>();
 builder.Services.AddScoped<ICauseService, CauseService>();
 
 var app = builder.Build();
