@@ -40,4 +40,41 @@ public class OrganizationController : ControllerBase
     await _organizationRepository.AddAsync(organization);
     return CreatedAtAction(nameof(GetByIdTask), new  { id = organization.Id }, organization);
   }
+
+  [HttpPatch("{id:int}")]
+  public async Task<IActionResult> UpdateAsTask(int id, [FromBody] Organization organization)
+  {
+    if (id != organization.Id)
+    {
+      return BadRequest();
+    }
+    
+    var organizationToUpdate = await _organizationRepository.GetByIdAsync(organization.Id);
+    if (organizationToUpdate == null)
+    {
+      return NotFound();
+    }
+    
+    organizationToUpdate.Name = organization.Name;
+    organizationToUpdate.ImageURL = organization.ImageURL;
+    organizationToUpdate.Description = organization.Description;
+    organizationToUpdate.Location = organization.Location;
+    organizationToUpdate.IsFollowing = organization.IsFollowing;
+    
+    await _organizationRepository.UpdateAsync(organizationToUpdate);
+    return Ok(organizationToUpdate);
+  }
+
+  [HttpDelete("{id:int}")]
+  public async Task<IActionResult> DeleteASyncTask(int id)
+  {
+    var organizationToDelete = await _organizationRepository.GetByIdAsync(id);
+    if (organizationToDelete == null)
+    {
+      return NotFound();
+    }
+
+    await _organizationRepository.DeleteAsync(organizationToDelete.Id);
+    return NoContent();
+  }
 }
