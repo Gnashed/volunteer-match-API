@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using VolunteerMatch.Data.Repositories.Interfaces;
+using VolunteerMatch.Models;
 
 namespace VolunteerMatch.Controllers;
 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using VolunteerMatch.Data.Repositories.Interfaces;
+using VolunteerMatch.Models;
 
 namespace VolunteerMatch.Controllers;
 
@@ -26,5 +27,17 @@ public class OrganizationController : ControllerBase
   {
     var organization = await _organizationRepository.GetByIdAsync(id.Value);
     return Ok(organization);
+  }
+
+  [HttpPost]
+  public async Task<IActionResult> AddAsyncTask([FromBody]Organization organization)
+  {
+    if (!ModelState.IsValid)
+    {
+      return BadRequest(ModelState);
+    }
+    
+    await _organizationRepository.AddAsync(organization);
+    return CreatedAtAction(nameof(GetByIdTask), new  { id = organization.Id }, organization);
   }
 }
