@@ -9,10 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// Register services for repository pattern here. Dependency injection is taking place here.
+// Register services for repository pattern here.
 builder.Services.AddScoped<ICauseRepository, CauseRepository>();
-builder.Services.AddScoped<ICauseService, CauseService>();
+// builder.Services.AddScoped<ICauseService, CauseService>();
 
 var app = builder.Build();
 
