@@ -15,9 +15,16 @@ public class CauseController : ControllerBase
   }
 
   [HttpGet]
-  public async Task<IActionResult> GetAllAsync()
+  public async Task<IActionResult> GetAllAsyncTask()
   {
-    var products = await _causeRepository.GetAllAsync();
-    return Ok(products);
+    var causes = await _causeRepository.GetAllAsync();
+    return Ok(causes);
+  }
+
+  [HttpGet("{id:int}")]
+  public async Task<IActionResult> GetByIdTask(int id)
+  {
+    var cause = await _causeRepository.GetByIdAsync(id);
+    return Ok(cause);
   }
 }
