@@ -100,21 +100,17 @@ using (var scope = app.Services.CreateScope())
 // =============================
 // VOLUNTEERS
 // =============================
-app.MapGet("/volunteers", async (HttpRequest request, VolunteerMatchDbContext db) =>
-{
-    var uid = request.Query["uid"].FirstOrDefault();
-
-    if (!string.IsNullOrEmpty(uid))
-    {
-        var match = await db.Volunteers.FirstOrDefaultAsync(v => v.Uid == uid);
-        return match is not null ? Results.Ok(match) : Results.NotFound();
-    }
-
-    return Results.Ok(await db.Volunteers.ToListAsync());
-});
+app.MapGet("/volunteers", async (VolunteerMatchDbContext db) =>
+    await db.Volunteers.ToListAsync());
 
 app.MapGet("/volunteers/{id}", async (int id, VolunteerMatchDbContext db) =>
     await db.Volunteers.FindAsync(id));
+
+app.MapGet("/volunteers/uid/{uid}", async (string uid, VolunteerMatchDbContext db) =>
+{
+    var match = await db.Volunteers.FirstOrDefaultAsync(v => v.Uid == uid);
+    return match is not null ? Results.Ok(match) : Results.NotFound();
+});
 
 app.MapPost("/volunteers", async (Volunteer volunteer, VolunteerMatchDbContext db) =>
 {
