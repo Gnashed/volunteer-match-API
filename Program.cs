@@ -112,6 +112,18 @@ app.MapGet("/volunteers/uid/{uid}", async (string uid, VolunteerMatchDbContext d
     return match is not null ? Results.Ok(match) : Results.NotFound();
 });
 
+app.MapGet("/volunteers/{volunteerId}/followed-organizations", async (int volunteerId, VolunteerMatchDbContext db) =>
+{
+    var orgIds = await db.OrganizationFollowers
+        .Where(f => f.VolunteerId == volunteerId)
+        .Select(f => f.OrganizationId)
+        .ToListAsync();
+    var organizations = await db.Organizations
+        .Where(o => orgIds.Contains(o.Id))
+        .ToListAsync();
+    return Results.Ok(organizations);
+});
+
 app.MapPost("/volunteers", async (Volunteer volunteer, VolunteerMatchDbContext db) =>
 {
     db.Volunteers.Add(volunteer);
@@ -155,6 +167,22 @@ app.MapGet("/organizations", async (HttpRequest request, VolunteerMatchDbContext
     }
 
     return Results.Ok(await db.Organizations.Include(o => o.Cause).ToListAsync());
+});
+
+app.MapGet("/organizations/{organizationId}/volunteers", async (int organizationId, VolunteerMatchDbContext db) =>
+{
+    var followers = await db.OrganizationFollowers
+        .Where(f => f.OrganizationId == organizationId)
+        .Select(f => new
+        {
+            f.Volunteer.Id,
+            f.Volunteer.FirstName,
+            f.Volunteer.LastName,
+            f.Volunteer.Email,
+            f.Volunteer.ImageUrl
+        })
+        .ToListAsync();
+    return Results.Ok(followers);
 });
 
 app.MapGet("/organizations/{id}", async (int id, VolunteerMatchDbContext db) =>
@@ -228,6 +256,13 @@ app.MapDelete("/causes/{id}", async (int id, VolunteerMatchDbContext db) =>
 // =============================
 app.MapGet("/organizationfollowers", async (VolunteerMatchDbContext db) =>
     await db.OrganizationFollowers.ToListAsync());
+
+app.MapGet("/organizationfollowers/check", async (int volunteerId, int organizationId, VolunteerMatchDbContext db) =>
+{
+    var isFollowing = await db.OrganizationFollowers
+        .AnyAsync(f => f.VolunteerId == volunteerId && f.OrganizationId == organizationId);
+    return Results.Ok(new { isFollowing });
+});
 
 app.MapPost("/organizationfollowers", async (OrganizationFollower follower, VolunteerMatchDbContext db) =>
 {
