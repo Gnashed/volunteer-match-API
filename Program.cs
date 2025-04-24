@@ -20,12 +20,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// builder.Services.AddControllers()
-//     .AddJsonOptions(options =>
-//     {
-//         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-//     });;
-
 #region Check comment below this line.
 // Add this above the `var app = builder.Build();` line. The middle statement is the most important since it makes an
 // instance of the VolunteerMatchDbContext class available to our endpoints.
@@ -50,6 +44,8 @@ builder.Services.AddSwaggerGen();
 
 // Register services for repository pattern here.
 builder.Services.AddScoped<ICauseRepository, CauseRepository>();
+builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+builder.Services.AddScoped<IVolunteerRepository, VolunteerRepository>();
 // builder.Services.AddScoped<ICauseService, CauseService>();
 
 var app = builder.Build();
