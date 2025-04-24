@@ -6,7 +6,7 @@ namespace VolunteerMatch.Data.Repositories;
 
 public class OrganizationRepository : IOrganizationRepository
 {
-  private readonly VolunteerMatchDbContext  _context;
+  private readonly VolunteerMatchDbContext _context;
   public OrganizationRepository(VolunteerMatchDbContext context)
   {
     _context = context;

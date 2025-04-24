@@ -8,5 +8,5 @@ public interface IVolunteerRepository
   Task<Volunteer> GetByIdAsync(int id);
   Task AddAsync(Volunteer volunteer);
   Task UpdateAsync(Volunteer volunteer);
-  Task DeleteAsync(Volunteer volunteer);
+  Task DeleteAsync(int id);
 }
