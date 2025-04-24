@@ -28,4 +28,48 @@ public class CauseController : ControllerBase
     var cause = await _causeRepository.GetByIdAsync(id);
     return Ok(cause);
   }
+
+  [HttpPost]
+  public async Task<IActionResult> PostAsyncTask(Cause cause)
+  {
+    if (!ModelState.IsValid)
+    {
+      return BadRequest(ModelState);
+    }
+    
+    await _causeRepository.AddAsync(cause);
+    return CreatedAtAction("GetByIdTask", new { id = cause.Id }, cause);
+  }
+
+  [HttpPatch("{id:int}")]
+  public async Task<IActionResult> PatchAsyncTask([FromBody] int id, Cause cause)
+  {
+    if (id != cause.Id)
+    {
+      return BadRequest();
+    }
+    
+    var causeToUpdate = await _causeRepository.GetByIdAsync(id);
+
+    if (causeToUpdate == null)
+    {
+      return NotFound();
+    }
+    
+    causeToUpdate.Name = cause.Name;
+    causeToUpdate.ImageUrl = cause.ImageUrl;
+    causeToUpdate.Description = cause.Description;
+    
+    await _causeRepository.UpdateAsync(causeToUpdate);
+    return Ok(causeToUpdate);
+  }
+
+  [HttpDelete("{id:int}")]
+  public async Task<IActionResult> DeleteAsyncTask(int id)
+  {
+    var cause = await _causeRepository.GetByIdAsync(id);
+
+    if (cause != null) await _causeRepository.DeleteAsync(cause.Id);
+    return NoContent();
+  }
 }
