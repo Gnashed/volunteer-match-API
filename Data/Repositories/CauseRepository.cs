@@ -6,7 +6,7 @@ namespace VolunteerMatch.Data.Repositories;
 
 public class CauseRepository : ICauseRepository
 {
-  // Remember that 'readonly' means this variable can by assigned only once when declared or inside the constructor of
+  // Remember that 'readonly' means this variable can be assigned only once when declared or inside the constructor of
   // this class. Also remember the object that it references can change.
   private readonly VolunteerMatchDbContext _context;
   
