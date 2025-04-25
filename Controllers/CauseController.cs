@@ -42,14 +42,14 @@ public class CauseController : ControllerBase
   }
 
   [HttpPatch("{id:int}")]
-  public async Task<IActionResult> PatchAsyncTask([FromBody] int id, Cause cause)
+  public async Task<IActionResult> PatchAsyncTask(int id, [FromBody] Cause cause)
   {
     if (id != cause.Id)
     {
       return BadRequest();
     }
     
-    var causeToUpdate = await _causeRepository.GetByIdAsync(id);
+    var causeToUpdate = await _causeRepository.GetByIdAsync(cause.Id);
 
     if (causeToUpdate == null)
     {
