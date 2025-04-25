@@ -46,6 +46,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICauseRepository, CauseRepository>();
 builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
 builder.Services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+builder.Services.AddScoped<IOrganizationFollowerRepository, OrganizationFollowerRepository>();
 // builder.Services.AddScoped<ICauseService, CauseService>();
 
 var app = builder.Build();

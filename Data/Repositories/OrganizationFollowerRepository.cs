@@ -12,13 +12,6 @@ public class OrganizationFollowerRepository : IOrganizationFollowerRepository
   {
     _context = context;
   }
-  
-  public async Task<List<Organization>> GetAllAsync()
-  {
-    return await _context.Organizations
-      .Include(o => o.OrganizationFollowers)
-      .ToListAsync();
-  }
 
   public async Task<List<Organization>> GetFollowersByOrganizationIdAsync(int organizationId)
   {

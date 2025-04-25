@@ -15,12 +15,12 @@ public class OrganizationController : ControllerBase
     _organizationRepository = organizationRepository;
   }
 
-  [HttpGet]
-  public async Task<IActionResult> GetAllAsyncTask()
-  {
-    var organizationFollowers = await _organizationRepository.GetAllAsync();
-    return Ok(organizationFollowers);
-  }
+  // [HttpGet]
+  // public async Task<IActionResult> GetAllAsyncTask()
+  // {
+  //   var organizationFollowers = await _organizationRepository.GetAllAsync();
+  //   return Ok(organizationFollowers);
+  // }
 
   [HttpGet("{id:int}")]
   public async Task<IActionResult> GetByIdTask(int? id)

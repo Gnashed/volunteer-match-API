@@ -12,7 +12,7 @@ public class OrganizationRepository : IOrganizationRepository
     _context = context;
   }
   
-  public async Task<ICollection<OrganizationFollower>> GetAllAsync() => await _context.OrganizationFollowers.ToListAsync();
+  // public async Task<ICollection<OrganizationFollower>> GetAllAsync() => await _context.OrganizationFollowers.ToListAsync();
 
   public async Task<Organization?> GetByIdAsync(int id)
   {
