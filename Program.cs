@@ -31,9 +31,9 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddNpgsql<VolunteerMatchDbContext>(builder.Configuration["VolunteerMatchDbConnectionString"]);
 
 // Set the JSON serializer options
-builder.Services.Configure<JsonOptions>(options =>
+builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 #endregion
 
