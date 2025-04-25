@@ -11,7 +11,52 @@ public static class OrganizationFollowerData
       new OrganizationFollower
       {
         OrganizationId = 1,
-        VolunteerId = 0
+        VolunteerId = 1
+      },
+      new OrganizationFollower
+      {
+        OrganizationId = 1,
+        VolunteerId = 2
+      },
+      new OrganizationFollower
+      {
+        OrganizationId = 1,
+        VolunteerId = 3
+      },
+      new OrganizationFollower
+      {
+        OrganizationId = 1,
+        VolunteerId = 4
+      },
+      new OrganizationFollower
+      {
+        OrganizationId = 2,
+        VolunteerId = 5
+      },
+      new OrganizationFollower
+      {
+        OrganizationId = 2,
+        VolunteerId = 6
+      },
+      new OrganizationFollower
+      {
+        OrganizationId = 2,
+        VolunteerId = 7
+      },
+      new OrganizationFollower
+      {
+        OrganizationId = 2,
+        VolunteerId = 8
+      },
+      new OrganizationFollower
+      {
+        OrganizationId = 3,
+        VolunteerId = 9
+      },
+      new OrganizationFollower
+      {
+        OrganizationId = 3,
+        VolunteerId = 10
       }
     };
   }
