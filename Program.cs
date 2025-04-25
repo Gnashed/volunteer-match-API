@@ -49,6 +49,9 @@ builder.Services.AddScoped<IVolunteerRepository, VolunteerRepository>();
 builder.Services.AddScoped<IOrganizationFollowerRepository, OrganizationFollowerRepository>();
 // builder.Services.AddScoped<ICauseService, CauseService>();
 
+// Register controllers
+builder.Services.AddControllers();
+
 var app = builder.Build();
 app.UseCors();
 
@@ -60,4 +63,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// ASP.NET Core wills scan for controller endpoints and expose them. W/o this line, the controllers are not registered
+// and Swagger won't see them.
+app.MapControllers();
+
 app.Run();

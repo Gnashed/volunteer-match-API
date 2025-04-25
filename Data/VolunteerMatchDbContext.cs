@@ -23,26 +23,26 @@ public class VolunteerMatchDbContext : DbContext
         modelBuilder.Entity<OrganizationFollower>()
             .HasKey(of => new { of.VolunteerId, of.OrganizationId });
 
-        // Relationships
-        modelBuilder.Entity<OrganizationFollower>()
-            .HasOne(of => of.Volunteer)
-            .WithMany(v => v.OrganizationFollowers)
-            .HasForeignKey(of => of.VolunteerId);
-
-        modelBuilder.Entity<OrganizationFollower>()
-            .HasOne(of => of.Organization)
-            .WithMany(o => o.OrganizationFollowers)
-            .HasForeignKey(of => of.OrganizationId);
-
-        modelBuilder.Entity<Organization>()
-            .HasOne(o => o.Volunteer)
-            .WithMany() // You can replace this with a collection if needed
-            .HasForeignKey(o => o.VolunteerId);
-
-        modelBuilder.Entity<Organization>()
-            .HasOne(o => o.Cause)
-            .WithMany(c => c.Organizations)
-            .HasForeignKey(o => o.CauseId);
+        // // Relationships
+        // modelBuilder.Entity<OrganizationFollower>()
+        //     .HasOne(of => of.Volunteer)
+        //     .WithMany(v => v.OrganizationFollowers)
+        //     .HasForeignKey(of => of.VolunteerId);
+        //
+        // modelBuilder.Entity<OrganizationFollower>()
+        //     .HasOne(of => of.Organization)
+        //     .WithMany(o => o.OrganizationFollowers)
+        //     .HasForeignKey(of => of.OrganizationId);
+        //
+        // modelBuilder.Entity<Organization>()
+        //     .HasOne(o => o.Volunteer)
+        //     .WithMany() // You can replace this with a collection if needed
+        //     .HasForeignKey(o => o.VolunteerId);
+        //
+        // modelBuilder.Entity<Organization>()
+        //     .HasOne(o => o.Cause)
+        //     .WithMany(c => c.Organizations)
+        //     .HasForeignKey(o => o.CauseId);
 
         // Seed data
         modelBuilder.Entity<Cause>().HasData(
