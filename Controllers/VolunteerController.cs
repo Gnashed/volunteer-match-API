@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using VolunteerMatch.Data.Repositories.Interfaces;
 using VolunteerMatch.Models;
 using VolunteerMatch.Models.DTOs;
+using VolunteerMatch.Models.Requests;
 
 namespace VolunteerMatch.Controllers;
 
@@ -52,34 +53,59 @@ public class VolunteerController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<IActionResult> PostAsyncTask(Volunteer volunteer)
+  public async Task<IActionResult> PostAsyncTask([FromBody] CreateVolunteerRequest request)
   {
     if (!ModelState.IsValid)
     {
       return BadRequest(ModelState);
     }
+
+    var volunteer = new Volunteer
+    {
+      FirstName = request.FirstName,
+      LastName = request.LastName,
+      Email = request.Email,
+      ImageUrl = request.ImageUrl,
+      Uid = request.Uid
+    };
     
     await _volunteerRepository.AddAsync(volunteer);
-    return CreatedAtAction(nameof(GetByIdAsyncTask), new { id = volunteer.Id }, volunteer);
+
+    var volunteerDto = new VolunteerDto
+    {
+      Id = volunteer.Id,
+      Uid = volunteer.Uid,
+      FirstName = request.FirstName,
+      LastName = request.LastName,
+      Email = request.Email,
+      ImageUrl = request.ImageUrl,
+    };
+    
+    return CreatedAtAction(nameof(GetByIdAsyncTask), new { id = volunteer.Id }, volunteerDto);
   }
 
   [HttpPatch("{id:int}")]
-  public async Task<IActionResult> PatchAsyncTask(int id, [FromBody] Volunteer volunteer)
+  public async Task<IActionResult> PatchAsyncTask(int id, [FromBody] UpdateVolunteerRequest request)
   {
-    if (id != volunteer.Id)
-    {
-      return BadRequest();
-    }
+    var volunteerToUpdate = await _volunteerRepository.GetByIdAsync(id);
     
-    var volunteerToUpdate = await _volunteerRepository.GetByIdAsync(volunteer.Id);
-    
-    volunteerToUpdate.FirstName = volunteer.FirstName;
-    volunteerToUpdate.LastName = volunteer.LastName;
-    volunteerToUpdate.Email = volunteer.Email;
-    volunteerToUpdate.ImageUrl = volunteer.ImageUrl;
+    volunteerToUpdate.FirstName = request.FirstName;
+    volunteerToUpdate.LastName = request.LastName;
+    volunteerToUpdate.Email = request.Email;
+    volunteerToUpdate.ImageUrl = request.ImageUrl;
     
     await _volunteerRepository.UpdateAsync(volunteerToUpdate);
-    return Ok(volunteer);
+
+    var volunteerDto = new VolunteerDto
+    {
+      Id = volunteerToUpdate.Id,
+      Uid = volunteerToUpdate.Uid,
+      FirstName = volunteerToUpdate.FirstName,
+      LastName = volunteerToUpdate.LastName,
+      Email = volunteerToUpdate.Email,
+      ImageUrl = volunteerToUpdate.ImageUrl
+    };
+    return Ok(volunteerDto);
   }
 
   [HttpDelete]
