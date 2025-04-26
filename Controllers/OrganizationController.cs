@@ -32,7 +32,7 @@ public class OrganizationController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<IActionResult> AddAsyncTask([FromBody] CreateOrganizationRequest  request)
+  public async Task<IActionResult> AddAsyncTask([FromBody] CreateOrganizationRequest request)
   {
     if (!ModelState.IsValid)
     {

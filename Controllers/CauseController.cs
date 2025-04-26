@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using VolunteerMatch.Data.Repositories.Interfaces;
 using VolunteerMatch.Models;
+using VolunteerMatch.Models.DTOs;
+using VolunteerMatch.Models.Requests;
 
 namespace VolunteerMatch.Controllers;
 
@@ -30,15 +32,31 @@ public class CauseController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<IActionResult> PostAsyncTask(Cause cause)
+  public async Task<IActionResult> PostAsyncTask([FromBody] CreateCauseRequest request)
   {
     if (!ModelState.IsValid)
     {
       return BadRequest(ModelState);
     }
+
+    var cause = new Cause
+    {
+      Name = request.Name,
+      Description = request.Description,
+      ImageUrl = request.ImageUrl
+    };
     
     await _causeRepository.AddAsync(cause);
-    return CreatedAtAction("GetByIdTask", new { id = cause.Id }, cause);
+
+    var causeDto = new CauseDto
+    {
+      Id = cause.Id,
+      Name = cause.Name,
+      Description = cause.Description,
+      ImageUrl = cause.ImageUrl
+    };
+    
+    return CreatedAtAction("GetByIdTask", new { id = cause.Id }, causeDto);
   }
 
   [HttpPatch("{id:int}")]
