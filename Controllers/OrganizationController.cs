@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using VolunteerMatch.Data.Repositories.Interfaces;
 using VolunteerMatch.Models;
+using VolunteerMatch.Models.DTOs;
+using VolunteerMatch.Models.Requests;
 
 namespace VolunteerMatch.Controllers;
 
@@ -30,15 +32,37 @@ public class OrganizationController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<IActionResult> AddAsyncTask([FromBody]Organization organization)
+  public async Task<IActionResult> AddAsyncTask([FromBody] CreateOrganizationRequest  request)
   {
     if (!ModelState.IsValid)
     {
       return BadRequest(ModelState);
     }
     
+    var organization = new Organization
+    {
+      Name = request.Name,
+      Description = request.Description,
+      ImageURL = request.ImageURL,
+      Location = request.Location,
+      IsFollowing = false,
+      CauseId = request.CauseId
+    };
+    
     await _organizationRepository.AddAsync(organization);
-    return CreatedAtAction(nameof(GetByIdTask), new  { id = organization.Id }, organization);
+    
+    var organizationDto = new OrganizationDto
+    {
+      Id = organization.Id,
+      Name = organization.Name,
+      Description = organization.Description,
+      ImageURL = organization.ImageURL,
+      Location = organization.Location,
+      IsFollowing = organization.IsFollowing,
+      CauseId = organization.CauseId
+    };
+    
+    return CreatedAtAction(nameof(GetByIdTask), new  { id = organization.Id }, organizationDto);
   }
 
   [HttpPatch("{id:int}")]
