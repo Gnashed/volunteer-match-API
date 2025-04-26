@@ -17,18 +17,27 @@ public class OrganizationController : ControllerBase
     _organizationRepository = organizationRepository;
   }
 
-  // [HttpGet]
-  // public async Task<IActionResult> GetAllAsyncTask()
-  // {
-  //   var organizationFollowers = await _organizationRepository.GetAllAsync();
-  //   return Ok(organizationFollowers);
-  // }
-
   [HttpGet("{id:int}")]
   public async Task<IActionResult> GetByIdTask(int? id)
   {
     var organization = await _organizationRepository.GetByIdAsync(id.Value);
-    return Ok(organization);
+
+    if (organization == null)
+    {
+      return NotFound();
+    }
+
+    var organizationDto = new OrganizationDto
+    {
+      Id = organization.Id,
+      Name = organization.Name,
+      ImageURL = organization.ImageURL,
+      Description = organization.Description,
+      Location = organization.Location,
+      IsFollowing = organization.IsFollowing,
+      CauseId = organization.CauseId
+    };
+    return Ok(organizationDto);
   }
 
   [HttpPost]
