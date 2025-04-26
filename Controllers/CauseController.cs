@@ -28,7 +28,17 @@ public class CauseController : ControllerBase
   public async Task<IActionResult> GetByIdTask(int id)
   {
     var cause = await _causeRepository.GetByIdAsync(id);
-    return Ok(cause);
+    
+    // Mapping DTO
+    var causeDto = new CauseDto
+    {
+      Id = cause.Id,
+      Name = cause.Name,
+      Description = cause.Description,
+      ImageUrl = cause.ImageUrl
+    };
+    
+    return Ok(causeDto);
   }
 
   [HttpPost]
