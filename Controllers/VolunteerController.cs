@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VolunteerMatch.Data.Repositories.Interfaces;
 using VolunteerMatch.Models;
+using VolunteerMatch.Models.DTOs;
 
 namespace VolunteerMatch.Controllers;
 
@@ -18,14 +19,36 @@ public class VolunteerController : ControllerBase
   [HttpGet]
   public async Task<IActionResult> GetAllAsyncTask()
   {
-    return Ok(await _volunteerRepository.GetAllAsync());
+    var volunteers = await _volunteerRepository.GetAllAsync();
+    var volunteersDtos = volunteers.Select(v => new VolunteerDto
+    {
+      Id = v.Id,
+      Uid = v.Uid,
+      FirstName = v.FirstName,
+      LastName = v.LastName,
+      Email = v.Email,
+      ImageUrl = v.ImageUrl
+    }).ToList();
+    
+    return Ok(volunteersDtos);
   }
 
   [HttpGet("{id:int}")]
   public async Task<IActionResult> GetByIdAsyncTask(int id)
   {
     var volunteer = await _volunteerRepository.GetByIdAsync(id);
-    return Ok(volunteer);
+
+    var volunteerDto = new VolunteerDto
+    {
+      Id = volunteer.Id,
+      Uid = volunteer.Uid,
+      FirstName = volunteer.FirstName,
+      LastName = volunteer.LastName,
+      Email = volunteer.Email,
+      ImageUrl = volunteer.ImageUrl
+    };
+    
+    return Ok(volunteerDto);
   }
 
   [HttpPost]

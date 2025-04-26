@@ -14,7 +14,7 @@ public class VolunteerRepository : IVolunteerRepository
   }
 
   // Controller action methods
-  public async Task<ICollection<Organization>> GetAllAsync() => await _context.Organizations.ToListAsync();
+  public async Task<ICollection<Volunteer>> GetAllAsync() => await _context.Volunteers.ToListAsync();
 
   public async Task<Volunteer> GetByIdAsync(int id)
   {
