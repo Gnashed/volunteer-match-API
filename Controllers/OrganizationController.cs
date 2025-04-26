@@ -45,7 +45,7 @@ public class OrganizationController : ControllerBase
       Description = request.Description,
       ImageURL = request.ImageURL,
       Location = request.Location,
-      IsFollowing = false,
+      IsFollowing = request.IsFollowing,
       CauseId = request.CauseId
     };
     

@@ -29,7 +29,13 @@ public class CauseController : ControllerBase
   {
     var cause = await _causeRepository.GetByIdAsync(id);
     
-    // Mapping DTO
+    // Check before mapping...
+    if (cause == null)
+    {
+      return NotFound();
+    }
+    
+    // Mapping DTO to what we want to expose to the client...
     var causeDto = new CauseDto
     {
       Id = cause.Id,
