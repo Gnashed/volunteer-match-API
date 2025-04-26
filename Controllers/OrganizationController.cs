@@ -66,27 +66,34 @@ public class OrganizationController : ControllerBase
   }
 
   [HttpPatch("{id:int}")]
-  public async Task<IActionResult> UpdateAsTask(int id, [FromBody] Organization organization)
+  public async Task<IActionResult> UpdateAsTask(int id, [FromBody] UpdateOrganizationRequest request)
   {
-    if (id != organization.Id)
-    {
-      return BadRequest();
-    }
+    var organizationToUpdate = await _organizationRepository.GetByIdAsync(id);
     
-    var organizationToUpdate = await _organizationRepository.GetByIdAsync(organization.Id);
     if (organizationToUpdate == null)
     {
       return NotFound();
     }
+
+    organizationToUpdate.Name = request.Name;
+    organizationToUpdate.ImageURL = request.ImageURL;
+    organizationToUpdate.Description = request.Description;
+    organizationToUpdate.Location = request.Location;
+    organizationToUpdate.IsFollowing = request.IsFollowing;
     
-    organizationToUpdate.Name = organization.Name;
-    organizationToUpdate.ImageURL = organization.ImageURL;
-    organizationToUpdate.Description = organization.Description;
-    organizationToUpdate.Location = organization.Location;
-    organizationToUpdate.IsFollowing = organization.IsFollowing;
+    var organizationDto = new OrganizationDto
+    {
+      Id = organizationToUpdate.Id,
+      Name = organizationToUpdate.Name,
+      Description = organizationToUpdate.Description,
+      ImageURL = organizationToUpdate.ImageURL,
+      Location = organizationToUpdate.Location,
+      IsFollowing = organizationToUpdate.IsFollowing,
+      CauseId = organizationToUpdate.CauseId
+    };
     
     await _organizationRepository.UpdateAsync(organizationToUpdate);
-    return Ok(organizationToUpdate);
+    return Ok(organizationDto);
   }
 
   [HttpDelete("{id:int}")]
