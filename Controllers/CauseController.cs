@@ -21,7 +21,17 @@ public class CauseController : ControllerBase
   public async Task<IActionResult> GetAllAsyncTask()
   {
     var causes = await _causeRepository.GetAllAsync();
-    return Ok(causes);
+    
+    // Mapping list to dto.
+    var causeDtos = causes.Select(c => new CauseDto
+    {
+      Id = c.Id,
+      Name = c.Name,
+      ImageUrl = c.ImageUrl,
+      Description = c.Description
+    }).ToList();
+    
+    return Ok(causeDtos);
   }
 
   [HttpGet("{id:int}")]
