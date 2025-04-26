@@ -76,26 +76,30 @@ public class CauseController : ControllerBase
   }
 
   [HttpPatch("{id:int}")]
-  public async Task<IActionResult> PatchAsyncTask(int id, [FromBody] Cause cause)
+  public async Task<IActionResult> PatchAsyncTask(int id, [FromBody] UpdateCauseRequest request)
   {
-    if (id != cause.Id)
-    {
-      return BadRequest();
-    }
-    
-    var causeToUpdate = await _causeRepository.GetByIdAsync(cause.Id);
+    var causeToUpdate = await _causeRepository.GetByIdAsync(id);
 
     if (causeToUpdate == null)
     {
       return NotFound();
     }
     
-    causeToUpdate.Name = cause.Name;
-    causeToUpdate.ImageUrl = cause.ImageUrl;
-    causeToUpdate.Description = cause.Description;
+    causeToUpdate.Name = request.Name;
+    causeToUpdate.ImageUrl = request.ImageUrl;
+    causeToUpdate.Description = request.Description;
     
     await _causeRepository.UpdateAsync(causeToUpdate);
-    return Ok(causeToUpdate);
+
+    var causeDto = new CauseDto
+    {
+      Id = causeToUpdate.Id,
+      Name = causeToUpdate.Name,
+      Description = causeToUpdate.Description,
+      ImageUrl = causeToUpdate.ImageUrl
+    };
+    
+    return Ok(causeDto);
   }
 
   [HttpDelete("{id:int}")]
