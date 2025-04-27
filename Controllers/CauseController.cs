@@ -7,7 +7,7 @@ using VolunteerMatch.Models.Requests;
 namespace VolunteerMatch.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/cause")]
 public class CauseController : ControllerBase
 {
   private readonly ICauseRepository _causeRepository;
@@ -18,6 +18,7 @@ public class CauseController : ControllerBase
   }
 
   [HttpGet]
+  [Route("/api/causes")]
   public async Task<IActionResult> GetAllAsyncTask()
   {
     var causes = await _causeRepository.GetAllAsync();

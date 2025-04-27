@@ -7,7 +7,7 @@ using VolunteerMatch.Models.Requests;
 namespace VolunteerMatch.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/volunteer")]
 public class VolunteerController : ControllerBase
 {
   private readonly IVolunteerRepository _volunteerRepository;

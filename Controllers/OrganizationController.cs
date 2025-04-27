@@ -7,7 +7,7 @@ using VolunteerMatch.Models.Requests;
 namespace VolunteerMatch.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/organization")]
 public class OrganizationController : ControllerBase
 {
   private readonly IOrganizationRepository _organizationRepository;
@@ -17,6 +17,25 @@ public class OrganizationController : ControllerBase
     _organizationRepository = organizationRepository;
   }
 
+  [HttpGet]
+  [Route("/api/organizations")]
+  public async Task<IActionResult> GetAllAsync()
+  {
+    var organizations = await _organizationRepository.GetAllAsync();
+    var organizationsDtos = organizations.Select(o => new OrganizationDto
+    {
+      Id = o.Id,
+      CauseId = o.CauseId,
+      Description = o.Description,
+      ImageURL = o.ImageURL,
+      IsFollowing = o.IsFollowing,
+      Name = o.Name,
+      Location = o.Location
+    });
+    
+    return Ok(organizationsDtos);
+  }
+  
   [HttpGet("{id:int}")]
   public async Task<IActionResult> GetByIdTask(int? id)
   {
