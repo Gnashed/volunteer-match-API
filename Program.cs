@@ -64,7 +64,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// ASP.NET Core wills scan for controller endpoints and expose them. W/o this line, the controllers are not registered
+// ASP.NET Core will scan for controller endpoints and expose them. W/o this line, the controllers are not registered
 // and Swagger won't see them.
 app.MapControllers();
 

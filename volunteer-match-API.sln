@@ -1,8 +1,10 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolunteerMatch", "VolunteerMatch.csproj", "{5A5975D4-1DF5-A77D-FB7A-C3196398AF21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolunteerMatch.Tests", "VolunteerMatch.Tests\VolunteerMatch.Tests.csproj", "{B2971B7D-CBDD-4697-ADFF-DD9CB9E65F34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,6 +16,10 @@ Global
 		{5A5975D4-1DF5-A77D-FB7A-C3196398AF21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A5975D4-1DF5-A77D-FB7A-C3196398AF21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A5975D4-1DF5-A77D-FB7A-C3196398AF21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2971B7D-CBDD-4697-ADFF-DD9CB9E65F34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2971B7D-CBDD-4697-ADFF-DD9CB9E65F34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2971B7D-CBDD-4697-ADFF-DD9CB9E65F34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2971B7D-CBDD-4697-ADFF-DD9CB9E65F34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
