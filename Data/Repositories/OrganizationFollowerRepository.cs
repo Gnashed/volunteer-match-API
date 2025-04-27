@@ -13,11 +13,17 @@ public class OrganizationFollowerRepository : IOrganizationFollowerRepository
     _context = context;
   }
 
-  public async Task<List<Organization>> GetFollowersByOrganizationIdAsync(int organizationId)
+  public async Task<List<OrganizationFollower>> GetFollowersByOrganizationIdAsync(int organizationId)
   {
-    return await _context.Organizations
-      .Where(o => o.Id == organizationId)
-      .Include(o => o.OrganizationFollowers)
+    return await _context.OrganizationFollowers
+      .Where(of => of.OrganizationId == organizationId)
       .ToListAsync();
+  }
+
+  public async Task<List<Organization>> GetOrganizationsUserIsFollowingTask(int volunteerId)
+  {
+     return await _context.Organizations
+       .Where(o => o.OrganizationFollowers.Any(of => of.VolunteerId == volunteerId))
+       .ToListAsync();
   }
 }

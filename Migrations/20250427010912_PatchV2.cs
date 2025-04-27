@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace VolunteerMatch.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class PatchV2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -150,15 +150,15 @@ namespace VolunteerMatch.Migrations
                 values: new object[,]
                 {
                     { 1, 1 },
-                    { 1, 2 },
-                    { 1, 3 },
-                    { 1, 4 },
-                    { 2, 5 },
-                    { 2, 6 },
-                    { 2, 7 },
-                    { 2, 8 },
-                    { 3, 9 },
-                    { 3, 10 }
+                    { 2, 1 },
+                    { 3, 1 },
+                    { 4, 1 },
+                    { 1, 5 },
+                    { 5, 6 },
+                    { 5, 7 },
+                    { 5, 8 },
+                    { 5, 9 },
+                    { 5, 10 }
                 });
 
             migrationBuilder.CreateIndex(

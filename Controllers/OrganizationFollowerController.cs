@@ -21,4 +21,11 @@ public class OrganizationFollowerController : ControllerBase
     var followers = await _organizationFollowerRepository.GetFollowersByOrganizationIdAsync(organizationId);
     return Ok(followers);
   }
+  
+  [HttpGet("volunteers/{volunteerId:int}/organizations-following")]
+  public async Task<ActionResult<List<Organization>>> GetOrganizationsUserIsFollowingTask(int volunteerId)
+  {
+    var following = await _organizationFollowerRepository.GetOrganizationsUserIsFollowingTask(volunteerId);
+    return Ok(following);
+  }
 }

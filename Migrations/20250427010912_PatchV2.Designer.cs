@@ -11,8 +11,8 @@ using VolunteerMatch.Data;
 namespace VolunteerMatch.Migrations
 {
     [DbContext(typeof(VolunteerMatchDbContext))]
-    [Migration("20250425210351_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250427010912_PatchV2")]
+    partial class PatchV2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -282,48 +282,48 @@ namespace VolunteerMatch.Migrations
                         },
                         new
                         {
-                            VolunteerId = 2,
-                            OrganizationId = 1
+                            VolunteerId = 1,
+                            OrganizationId = 2
                         },
                         new
                         {
-                            VolunteerId = 3,
-                            OrganizationId = 1
+                            VolunteerId = 1,
+                            OrganizationId = 3
                         },
                         new
                         {
-                            VolunteerId = 4,
-                            OrganizationId = 1
+                            VolunteerId = 1,
+                            OrganizationId = 4
                         },
                         new
                         {
                             VolunteerId = 5,
-                            OrganizationId = 2
+                            OrganizationId = 1
                         },
                         new
                         {
                             VolunteerId = 6,
-                            OrganizationId = 2
+                            OrganizationId = 5
                         },
                         new
                         {
                             VolunteerId = 7,
-                            OrganizationId = 2
+                            OrganizationId = 5
                         },
                         new
                         {
                             VolunteerId = 8,
-                            OrganizationId = 2
+                            OrganizationId = 5
                         },
                         new
                         {
                             VolunteerId = 9,
-                            OrganizationId = 3
+                            OrganizationId = 5
                         },
                         new
                         {
                             VolunteerId = 10,
-                            OrganizationId = 3
+                            OrganizationId = 5
                         });
                 });
 
