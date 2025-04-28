@@ -5,7 +5,7 @@ using VolunteerMatch.Models;
 namespace VolunteerMatch.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/")]
 public class OrganizationFollowerController : ControllerBase
 {
   private readonly IOrganizationFollowerRepository _organizationFollowerRepository;
@@ -15,14 +15,16 @@ public class OrganizationFollowerController : ControllerBase
     _organizationFollowerRepository = organizationFollowerRepository;
   }
 
-  [HttpGet("organizations/{organizationId:int}/followers")]
+  [HttpGet]
+  [Route("organizations/{organizationId:int}/followers")]
   public async Task<ActionResult<List<OrganizationFollower>>> GetFollowersByOrganizationIdAsync(int organizationId)
   {
     var followers = await _organizationFollowerRepository.GetFollowersByOrganizationIdAsync(organizationId);
     return Ok(followers);
   }
   
-  [HttpGet("volunteers/{volunteerId:int}/organizations-following")]
+  [HttpGet]
+  [Route("volunteers/{volunteerId:int}/organizations-following")]
   public async Task<ActionResult<List<Organization>>> GetOrganizationsUserIsFollowingTask(int volunteerId)
   {
     var following = await _organizationFollowerRepository.GetOrganizationsUserIsFollowingTask(volunteerId);
