@@ -11,15 +11,15 @@ using VolunteerMatch.Data;
 namespace VolunteerMatch.Migrations
 {
     [DbContext(typeof(VolunteerMatchDbContext))]
-    [Migration("20250427010912_PatchV2")]
-    partial class PatchV2
+    [Migration("20250428203441_RemovedUnitTesting")]
+    partial class RemovedUnitTesting
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

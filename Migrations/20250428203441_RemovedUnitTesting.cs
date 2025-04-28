@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace VolunteerMatch.Migrations
 {
     /// <inheritdoc />
-    public partial class PatchV2 : Migration
+    public partial class RemovedUnitTesting : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
