@@ -15,7 +15,7 @@ public class CauseRepositoryTests
   /*
    This is a helper method that builds and returns a new in-memory database context using VolunteerMatchDbContext
    from the data-access layer. We do this to avoid hitting our actual database during tests. Every test will use a fresh 
-   instance thanks to using Guid to create a unique database name.
+   instance thanks to using Guid to create a unique database name. 
   */
   private VolunteerMatchDbContext GetDbContext()
   {
