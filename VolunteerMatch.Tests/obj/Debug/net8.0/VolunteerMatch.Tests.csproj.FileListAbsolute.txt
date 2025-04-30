@@ -124,3 +124,4 @@
 /Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/obj/Debug/net8.0/VolunteerMatch.Tests.pdb
 /Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/obj/Debug/net8.0/VolunteerMatch.Tests.genruntimeconfig.cache
 /Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/obj/Debug/net8.0/ref/VolunteerMatch.Tests.dll
+/Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/obj/Debug/net8.0/VolunteerMatch.Tests.sourcelink.json

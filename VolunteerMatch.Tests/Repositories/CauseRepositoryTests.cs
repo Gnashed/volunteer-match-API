@@ -38,11 +38,11 @@ public class CauseRepositoryTests
    * 
    */
   [Fact]
-  public async Task GetAllCauses_ReturnsAllCauses()
+  public async Task GetAllAsync_ReturnsAllCauses()
   {
     // Arrange - Set up the test scenario
     var db = GetDbContext();
-    db.Causes.AddRange(new  List<Cause>
+    db.Causes.AddRange(new List<Cause>
     {
       new Cause {Id = 1, Name = "Test Cause 1", Description = "The first test instance.", ImageUrl = "image.jpg"},
       new Cause {Id = 2, Name = "Test Cause 2", Description = "The second test instance.",  ImageUrl = "image2.jpg"},
