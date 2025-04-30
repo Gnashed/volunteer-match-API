@@ -83,7 +83,7 @@ public class OrganizationRepositoryTests
   {
     // Arrange
     var db = GetDbContext();
-    db.Organizations.AddAsync(new Organization
+    await db.Organizations.AddAsync(new Organization
     {
       Id = 1,
       Name = "Change Group",
@@ -113,6 +113,8 @@ public class OrganizationRepositoryTests
 
     // Act
     var organization = await repository.GetByIdAsync(999);
+    
+    // Assert
     Assert.Null(organization);
   }
 
@@ -135,6 +137,7 @@ public class OrganizationRepositoryTests
     
     // Act
     await repository.AddAsync(newOrganization);
+    await db.SaveChangesAsync();
     
     // Assert
     await repository.GetByIdAsync(1);
@@ -165,6 +168,7 @@ public class OrganizationRepositoryTests
     
     // Act
     await repository.UpdateAsync(originalOrganization);
+    await db.SaveChangesAsync();
     
     // Assert
     var updatedOrganization = await repository.GetByIdAsync(1);
