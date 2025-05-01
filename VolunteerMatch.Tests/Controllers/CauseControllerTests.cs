@@ -4,7 +4,7 @@
  * When unit testing a controller, you can mock its dependency (ICauseRepository) using a mock.
  * 
  * Moq (a mocking library) will help with mocking the repository, and then we can verify that the controller methods 
- return the expected IActionResult types (Ok, NotFound, BadRequest, etc.).
+   return the expected IActionResult types (Ok, NotFound, BadRequest, etc.).
  *
  * When mocking with repository this way, unit tests are fast, isolated, and not reliant on EF Core.
  * 
@@ -74,7 +74,8 @@ public class CauseControllerTests
     // It.IsAny<int>() --- A Moq matcher that allows the method to be called with any integer value.
     // (Cause?)null) --- indicates the method will return a Task that resolves to null, but explicitly casted to a
     // nullable Cause type.
-    mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Cause?)null);
+    mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
+      .ReturnsAsync((Cause?)null);
     
     var controller = new CauseController(mockRepo.Object);
     
@@ -90,7 +91,8 @@ public class CauseControllerTests
   {
     // Arrange
     var mockRepo = new Mock<ICauseRepository>();
-    mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Cause>())).Returns(Task.CompletedTask);
+    mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Cause>()))
+      .Returns(Task.CompletedTask);
     
     var controller = new CauseController(mockRepo.Object);
     var request = new CreateCauseRequest
@@ -116,7 +118,8 @@ public class CauseControllerTests
   {
     // Arrange
     var mockRepo = new Mock<ICauseRepository>();
-    mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Cause?)null);
+    mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
+      .ReturnsAsync((Cause?)null);
     
     var controller = new CauseController(mockRepo.Object);
     var request = new UpdateCauseRequest
@@ -138,8 +141,16 @@ public class CauseControllerTests
   {
     // Arrange
     var mockRepo = new Mock<ICauseRepository>();
-    mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(new Cause { Id = 1 });
-    mockRepo.Setup(repo => repo.DeleteAsync(1)).Returns(Task.CompletedTask);
+    mockRepo.Setup(repo => repo.GetByIdAsync(1))
+      .ReturnsAsync(new Cause 
+      { 
+        Id = 1,
+        Name = "Education",
+        Description = "Desc",
+        ImageUrl = "img1.jpg" 
+      });
+    mockRepo.Setup(repo => repo.DeleteAsync(1))
+      .Returns(Task.CompletedTask);
     
     var controller = new CauseController(mockRepo.Object);
     
@@ -148,7 +159,6 @@ public class CauseControllerTests
 
     // Assert
     Assert.IsType<NoContentResult>(result);
-
   }
 }
 
