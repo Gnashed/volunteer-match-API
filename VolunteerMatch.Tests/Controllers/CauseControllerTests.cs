@@ -70,22 +70,45 @@ public class CauseControllerTests
   public async Task GetByIdAsync_ReturnNotFoundWhenCauseDoesNotExist()
   {
     // Arrange
+    var mockRepo = new Mock<ICauseRepository>();
+    // It.IsAny<int>() --- A Moq matcher that allows the method to be called with any integer value.
+    // (Cause?)null) --- indicates the method will return a Task that resolves to null, but explicitly casted to a
+    // nullable Cause type.
+    mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Cause?)null);
+    
+    var controller = new CauseController(mockRepo.Object);
     
     // Act
-    
+    var result = await controller.GetByIdTask(999);
+
     // Assert
-    
+    Assert.IsType<NotFoundResult>(result);
   }
 
   [Fact]
   public async Task AddAsync_ReturnsCreatedResultWhenCauseIsValid()
   {
     // Arrange
+    var mockRepo = new Mock<ICauseRepository>();
+    mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Cause>())).Returns(Task.CompletedTask);
+    
+    var controller = new CauseController(mockRepo.Object);
+    var request = new CreateCauseRequest
+    {
+      Name = "Education",
+      Description = "Desc",
+      ImageUrl = "img1.jpg"
+    };
     
     // Act
-    
-    // Assert
+    var result = await controller.PostAsyncTask(request);
 
+    // Assert
+    
+    // CreatedAtActionResult --- Returns HTTP status code 201 action result.
+    var createdResult = Assert.IsType<CreatedAtActionResult>(result);
+    var dto = Assert.IsType<CauseDto>(createdResult.Value);
+    Assert.Equal("Education",  dto.Name);
   }
 
   [Fact]
