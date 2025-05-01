@@ -115,21 +115,39 @@ public class CauseControllerTests
   public async Task UpdateAsync_ReturnsNotFoundWhenCauseDoesNotExist()
   {
     // Arrange
+    var mockRepo = new Mock<ICauseRepository>();
+    mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Cause?)null);
+    
+    var controller = new CauseController(mockRepo.Object);
+    var request = new UpdateCauseRequest
+    {
+      Name = "Fitness",
+      Description = "Desc",
+      ImageUrl = "fitness.jpg"
+    };
     
     // Act
-    
-    // Assert
+    var result = await controller.PatchAsyncTask(1, request);
 
+    // Assert
+    Assert.IsType<NotFoundResult>(result);
   }
 
   [Fact]
-  public async Task DeleteAsync_ReturnsNoContentWhenCauseDoesNotExist()
+  public async Task DeleteAsync_ReturnsNoContentWhenCauseExist()
   {
     // Arrange
+    var mockRepo = new Mock<ICauseRepository>();
+    mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(new Cause { Id = 1 });
+    mockRepo.Setup(repo => repo.DeleteAsync(1)).Returns(Task.CompletedTask);
+    
+    var controller = new CauseController(mockRepo.Object);
     
     // Act
-    
+    var result = await controller.DeleteAsyncTask(1);
+
     // Assert
+    Assert.IsType<NoContentResult>(result);
 
   }
 }
