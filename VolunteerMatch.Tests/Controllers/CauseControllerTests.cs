@@ -65,13 +65,49 @@ public class CauseControllerTests
     // ASSERT
     Assert.Equal(2, returnValue.Count);
   }
-  
-  // [Fact]
-  //
-  // [Fact]
-  //
-  // [Fact]
-  //
-  // [Fact]
+
+  [Fact]
+  public async Task GetByIdAsync_ReturnNotFoundWhenCauseDoesNotExist()
+  {
+    // Arrange
+    
+    // Act
+    
+    // Assert
+    
+  }
+
+  [Fact]
+  public async Task AddAsync_ReturnsCreatedResultWhenCauseIsValid()
+  {
+    // Arrange
+    
+    // Act
+    
+    // Assert
+
+  }
+
+  [Fact]
+  public async Task UpdateAsync_ReturnsNotFoundWhenCauseDoesNotExist()
+  {
+    // Arrange
+    
+    // Act
+    
+    // Assert
+
+  }
+
+  [Fact]
+  public async Task DeleteAsync_ReturnsNoContentWhenCauseDoesNotExist()
+  {
+    // Arrange
+    
+    // Act
+    
+    // Assert
+
+  }
 }
 
