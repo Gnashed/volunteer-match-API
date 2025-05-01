@@ -10,6 +10,7 @@ public class VolunteerMatchDbContext : DbContext
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<Cause> Causes { get; set; }
     public DbSet<OrganizationFollower> OrganizationFollowers { get; set; }
+    public DbSet<VolunteerFollower> VolunteerFollowers { get;}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,6 +30,22 @@ public class VolunteerMatchDbContext : DbContext
             .HasOne(of => of.Organization)
             .WithMany(o => o.OrganizationFollowers)
             .HasForeignKey(of => of.OrganizationId);
+
+        // Composite key for VolunteerFollower
+        modelBuilder.Entity<VolunteerFollower>()
+            .HasKey(vf => new { vf.FollowerId, vf.FollowedId });
+
+        modelBuilder.Entity<VolunteerFollower>()
+            .HasOne(vf => vf.Follower)
+            .WithMany(v => v.Followers)  
+            .HasForeignKey(vf => vf.FollowerId)
+            .OnDelete(DeleteBehavior.Restrict); 
+
+        modelBuilder.Entity<VolunteerFollower>()
+            .HasOne(vf => vf.Followed)
+            .WithMany(v => v.Followed)
+            .HasForeignKey(vf => vf.FollowedId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Organization>()
             .HasOne(o => o.Volunteer)

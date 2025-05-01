@@ -15,7 +15,9 @@ namespace volunteerMatch.Data
                 LastName = "Scotchforth",
                 Email = "mscotchforth0@unicef.org",
                 ImageUrl = "https://www.wsaz.com/resizer/TtxT5eHIfsdlCYPQRJG_wdDg9yQ=/arc-photo-gray/arc3-prod/public/FLBGRRRDQNHYBNTNHU4WOWRIFY.png",
-                OrganizationFollowers = new List<OrganizationFollower>()
+                OrganizationFollowers = new List<OrganizationFollower>(),
+                Followers = new List<VolunteerFollower>(),
+                Followed = new List<VolunteerFollower>()
             },
             new Volunteer
             {
@@ -25,7 +27,9 @@ namespace volunteerMatch.Data
                 LastName = "Normanvell",
                 Email = "nnormanvell1@un.org",
                 ImageUrl = "https://www.wsaz.com/resizer/TtxT5eHIfsdlCYPQRJG_wdDg9yQ=/arc-photo-gray/arc3-prod/public/FLBGRRRDQNHYBNTNHU4WOWRIFY.png",
-                OrganizationFollowers = new List<OrganizationFollower>()
+                OrganizationFollowers = new List<OrganizationFollower>(),
+                Followers = new List<VolunteerFollower>(),
+                Followed = new List<VolunteerFollower>()
             },
             new Volunteer
             {
@@ -35,7 +39,9 @@ namespace volunteerMatch.Data
                 LastName = "Low",
                 Email = "alow2@vkontakte.ru",
                 ImageUrl = "https://www.wsaz.com/resizer/TtxT5eHIfsdlCYPQRJG_wdDg9yQ=/arc-photo-gray/arc3-prod/public/FLBGRRRDQNHYBNTNHU4WOWRIFY.png",
-                OrganizationFollowers = new List<OrganizationFollower>()
+                OrganizationFollowers = new List<OrganizationFollower>(),
+                Followers = new List<VolunteerFollower>(),
+                Followed = new List<VolunteerFollower>()
             },
             new Volunteer
             {
@@ -45,7 +51,9 @@ namespace volunteerMatch.Data
                 LastName = "Stavers",
                 Email = "rstavers3@illinois.edu",
                 ImageUrl = "https://www.wsaz.com/resizer/TtxT5eHIfsdlCYPQRJG_wdDg9yQ=/arc-photo-gray/arc3-prod/public/FLBGRRRDQNHYBNTNHU4WOWRIFY.png",
-                OrganizationFollowers = new List<OrganizationFollower>()
+                OrganizationFollowers = new List<OrganizationFollower>(),
+                Followers = new List<VolunteerFollower>(),
+                Followed = new List<VolunteerFollower>()
             },
             new Volunteer
             {
@@ -55,7 +63,9 @@ namespace volunteerMatch.Data
                 LastName = "Howman",
                 Email = "ghowman4@ed.gov",
                 ImageUrl = "https://www.wsaz.com/resizer/TtxT5eHIfsdlCYPQRJG_wdDg9yQ=/arc-photo-gray/arc3-prod/public/FLBGRRRDQNHYBNTNHU4WOWRIFY.png",
-                OrganizationFollowers = new List<OrganizationFollower>()
+                OrganizationFollowers = new List<OrganizationFollower>(),
+                Followers = new List<VolunteerFollower>(),
+                Followed = new List<VolunteerFollower>()
             },
             new Volunteer
             {
@@ -65,7 +75,9 @@ namespace volunteerMatch.Data
                 LastName = "Darling",
                 Email = "adarling5@gnu.org",
                 ImageUrl = "https://www.wsaz.com/resizer/TtxT5eHIfsdlCYPQRJG_wdDg9yQ=/arc-photo-gray/arc3-prod/public/FLBGRRRDQNHYBNTNHU4WOWRIFY.png",
-                OrganizationFollowers = new List<OrganizationFollower>()
+                OrganizationFollowers = new List<OrganizationFollower>(),
+                Followers = new List<VolunteerFollower>(),
+                Followed = new List<VolunteerFollower>()
             },
             new Volunteer
             {
@@ -75,7 +87,9 @@ namespace volunteerMatch.Data
                 LastName = "Gothrup",
                 Email = "mgothrup6@51.la",
                 ImageUrl = "https://www.wsaz.com/resizer/TtxT5eHIfsdlCYPQRJG_wdDg9yQ=/arc-photo-gray/arc3-prod/public/FLBGRRRDQNHYBNTNHU4WOWRIFY.png",
-                OrganizationFollowers = new List<OrganizationFollower>()
+                OrganizationFollowers = new List<OrganizationFollower>(),
+                Followers = new List<VolunteerFollower>(),
+                Followed = new List<VolunteerFollower>()
             },
             new Volunteer
             {
@@ -85,7 +99,9 @@ namespace volunteerMatch.Data
                 LastName = "Shelmerdine",
                 Email = "bshelmerdine7@woothemes.com",
                 ImageUrl = "https://www.wsaz.com/resizer/TtxT5eHIfsdlCYPQRJG_wdDg9yQ=/arc-photo-gray/arc3-prod/public/FLBGRRRDQNHYBNTNHU4WOWRIFY.png",
-                OrganizationFollowers = new List<OrganizationFollower>()
+                OrganizationFollowers = new List<OrganizationFollower>(),
+                Followers = new List<VolunteerFollower>(),
+                Followed = new List<VolunteerFollower>()
             },
             new Volunteer
             {
@@ -95,7 +111,9 @@ namespace volunteerMatch.Data
                 LastName = "D'Alesio",
                 Email = "adalesio8@smh.com.au",
                 ImageUrl = "https://www.wsaz.com/resizer/TtxT5eHIfsdlCYPQRJG_wdDg9yQ=/arc-photo-gray/arc3-prod/public/FLBGRRRDQNHYBNTNHU4WOWRIFY.png",
-                OrganizationFollowers = new List<OrganizationFollower>()
+                OrganizationFollowers = new List<OrganizationFollower>(),
+                Followers = new List<VolunteerFollower>(),
+                Followed = new List<VolunteerFollower>()
             },
             new Volunteer
             {
@@ -105,7 +123,9 @@ namespace volunteerMatch.Data
                 LastName = "Disley",
                 Email = "vdisley9@skype.com",
                 ImageUrl = "https://www.wsaz.com/resizer/TtxT5eHIfsdlCYPQRJG_wdDg9yQ=/arc-photo-gray/arc3-prod/public/FLBGRRRDQNHYBNTNHU4WOWRIFY.png",
-                OrganizationFollowers = new List<OrganizationFollower>()
+                OrganizationFollowers = new List<OrganizationFollower>(),
+                Followers = new List<VolunteerFollower>(),
+                Followed = new List<VolunteerFollower>()
             }
         };
     }

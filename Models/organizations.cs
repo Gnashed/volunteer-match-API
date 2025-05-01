@@ -12,7 +12,7 @@ public class Organization
     public string ImageURL { get; set; }
     public string Description { get; set; }
     public string Location { get; set; }
-    public int CauseId { get; set; }
+    public List<int> CauseId { get; set; }
     public bool IsFollowing { get; set; }
 
     public Volunteer Volunteer { get; set; }

@@ -162,7 +162,7 @@ app.MapGet("/organizations", async (HttpRequest request, VolunteerMatchDbContext
     {
         return Results.Ok(await db.Organizations
             .Include(o => o.Cause)
-            .Where(o => o.CauseId == causeId)
+            .Where(o => o.CauseId.Contains(causeId))
             .ToListAsync());
     }
 
@@ -280,5 +280,36 @@ app.MapDelete("/organizationfollowers/{volunteerId}/{organizationId}", async (in
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
+
+// =============================
+// VOLUNTEER FOLLOWERS
+// =============================
+app.MapGet("/volunteerfollowers", async (VolunteerMatchDbContext db) =>
+    await db.VolunteerFollowers.ToListAsync());
+
+app.MapGet("/volunteerfollowers/check", async (int followerId, int followingId, VolunteerMatchDbContext db) =>
+{
+    var isFollowing = await db.VolunteerFollowers
+        .AnyAsync(f => f.FollowerId == followerId && f.FollowedId == followingId);
+    return Results.Ok(new { isFollowing });
+});
+
+app.MapPost("/volunteerfollowers", async (VolunteerFollower follower, VolunteerMatchDbContext db) =>
+{
+    db.VolunteerFollowers.Add(follower);
+    await db.SaveChangesAsync();
+    return Results.Created($"/volunteerfollowers/{follower.FollowerId}/{follower.FollowedId}", follower);
+});
+
+app.MapDelete("/volunteerfollowers/{followerId}/{followingId}", async (int followerId, int followingId, VolunteerMatchDbContext db) =>
+{
+    var record = await db.VolunteerFollowers.FindAsync(followerId, followingId);
+    if (record == null) return Results.NotFound();
+
+    db.VolunteerFollowers.Remove(record);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
 
 app.Run();
