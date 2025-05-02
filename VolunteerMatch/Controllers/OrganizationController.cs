@@ -31,7 +31,7 @@ public class OrganizationController : ControllerBase
       IsFollowing = o.IsFollowing,
       Name = o.Name,
       Location = o.Location
-    });
+    }).ToList();
     
     return Ok(organizationsDtos);
   }

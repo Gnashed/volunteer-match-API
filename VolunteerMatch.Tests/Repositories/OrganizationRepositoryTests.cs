@@ -83,7 +83,7 @@ public class OrganizationRepositoryTests
   {
     // Arrange
     var db = GetDbContext();
-    await db.Organizations.AddAsync(new Organization
+    db.Organizations.Add(new Organization
     {
       Id = 1,
       Name = "Change Group",

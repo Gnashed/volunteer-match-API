@@ -43,7 +43,8 @@ public class CauseControllerTests
      * .ReturnsAsync() -- Specifies what the mock should return when GetAllAsync() method is called.
      * 
     */ 
-    mockRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(new List<Cause>
+    mockRepo.Setup(repo => repo.GetAllAsync())
+      .ReturnsAsync(new List<Cause>
     {
       new Cause { Id = 1, Name = "Education", Description = "Desc", ImageUrl = "img1.jpg" },
       new Cause { Id = 2, Name = "Health", Description = "Desc", ImageUrl = "img2.jpg" }
