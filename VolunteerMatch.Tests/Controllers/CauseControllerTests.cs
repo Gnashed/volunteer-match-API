@@ -86,6 +86,29 @@ public class CauseControllerTests
     // Assert
     Assert.IsType<NotFoundResult>(result);
   }
+  
+  [Fact]
+  public async Task GetByIdAsync_ReturnsOkWithCause()
+  {
+    // Arrange
+    var mockRepo = new Mock<ICauseRepository>();
+    mockRepo.Setup(repo => repo.GetByIdAsync(1))
+      .ReturnsAsync(new Cause
+      {
+        Id = 1,
+        Name = "Special Needs",
+        Description = "A description for cause ...",
+        ImageUrl = "image.jpg"
+      });
+    var controller = new CauseController(mockRepo.Object);
+
+    // Act
+    var result = await controller.GetByIdTask(1);
+    var okResult = Assert.IsType<OkObjectResult>(result);
+
+    // Assert
+    Assert.IsType<CauseDto>(okResult.Value);
+  }
 
   [Fact]
   public async Task AddAsync_ReturnsCreatedResultWhenCauseIsValid()
@@ -112,6 +135,43 @@ public class CauseControllerTests
     var createdResult = Assert.IsType<CreatedAtActionResult>(result);
     var dto = Assert.IsType<CauseDto>(createdResult.Value);
     Assert.Equal("Education",  dto.Name);
+  }
+  
+  [Fact]
+  public async Task UpdateAsync_ReturnsOkWhenCauseDoesExist()
+  {
+    // Arrange
+    var existingCause = new Cause()
+    {
+      Id = 1,
+      Name = "Neurodivercity",
+      Description = "Description for neurodiversity ...",
+      ImageUrl = "img1.jpg"
+    };
+      
+    var mockRepo = new Mock<ICauseRepository>();
+    mockRepo.Setup(repo => repo.GetByIdAsync(1))
+      .ReturnsAsync(existingCause);
+    // To simulate a success
+    mockRepo.Setup(repo => repo.UpdateAsync(It.IsAny<Cause>()))
+      .Returns(Task.CompletedTask);
+    var controller = new CauseController(mockRepo.Object);
+
+    var updateRequest = new UpdateCauseRequest
+    {
+      Name = "Neurodiversity",
+      ImageUrl = "image.jpg",
+      Description = "Description for neurodiversity ...",
+    };
+
+    // Act
+    var result = await controller.PatchAsyncTask(1, updateRequest);
+
+    // Assert
+    var okResult = Assert.IsType<OkObjectResult>(result);
+    var returnedCauseDto = Assert.IsType<CauseDto>(okResult.Value);
+      
+    Assert.Equal(updateRequest.Name,  returnedCauseDto.Name);
   }
 
   [Fact]
