@@ -57,7 +57,7 @@ public class CauseControllerTests
     
     var result = await controller.GetAllAsyncTask();
     // Asserts that the `result` is of type OkObjectResult, which represents HTTP status code 200 in ASP.NET Core. If ...
-    // successful, `okResult` will hold the casted value of result as OkObjectResult.
+    // successful, `okResult` will hold the cast value of result as OkObjectResult.
     var okResult = Assert.IsType<OkObjectResult>(result);
     // Asserts that the `Value` property is of type List<CauseDtos>. If successful, returnValue will hold the casted ...
     // value of okResult.Value as a list of CauseDto objects.
@@ -73,7 +73,7 @@ public class CauseControllerTests
     // Arrange
     var mockRepo = new Mock<ICauseRepository>();
     // It.IsAny<int>() --- A Moq matcher that allows the method to be called with any integer value.
-    // (Cause?)null) --- indicates the method will return a Task that resolves to null, but explicitly casted to a
+    // (Cause?)null) --- indicates the method will return a Task that resolves to null, but explicitly cast to a
     // nullable Cause type.
     mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
       .ReturnsAsync((Cause?)null);

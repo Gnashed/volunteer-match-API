@@ -59,79 +59,93 @@ public class OrganizationControllerTests
     Assert.Equal(3, returnValue.Count);
   }
 
-  // [Fact]
-  // public async Task GetByIdAsync_ReturnsNotFoundWhenOrganizationDoesNotExist()
-  // {
-  //   // Arrange
-  //   
-  //   
-  //   // Act
-  //   
-  //   
-  //   // Assert
-  //
-  //
-  // }
-  //
-  // [Fact]
-  // public async Task GetByIdAsync_ReturnsOkWithOrganization()
-  // {
-  //   // Arrange
-  //   
-  //   
-  //   // Act
-  //   
-  //   
-  //   // Assert
-  //
-  //
-  // }
-  //
-  // [Fact]
-  // public async Task AddAsync_ReturnsCreatedResultWhenOrganizationIsValid()
-  // {
-  //   {
-  //     // Arrange
-  //     
-  //   
-  //     // Act
-  //     
-  //   
-  //     // Assert
-  //     
-  //
-  //   }
-  // }
-  //
-  // [Fact]
-  // public async Task UpdateAsync_ReturnsNotFoundWhenOrganizationDoesNotExist()
-  // {
-  //   {
-  //     // Arrange
-  //   
-  //   
-  //     // Act
-  //   
-  //   
-  //     // Assert
-  //
-  //
-  //   }
-  // }
-  //
-  // [Fact]
-  // public async Task DeleteAsync_ReturnsNoContentWhenOrganizationExist()
-  // {
-  //   {
-  //     // Arrange
-  //   
-  //   
-  //     // Act
-  //   
-  //   
-  //     // Assert
-  //
-  //
-  //   }
-  // }
+  [Fact]
+  public async Task GetByIdAsync_ReturnsNotFoundWhenOrganizationDoesNotExist()
+  {
+    // Arrange
+    var mockRepo = new Mock<IOrganizationRepository>();
+    mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
+      .ReturnsAsync((Organization?)null);
+    var controller = new OrganizationController(mockRepo.Object);
+    
+    // Act
+    var result = await controller.GetByIdTask(999);
+    
+    // Assert
+    Assert.IsType<NotFoundResult>(result);
+  }
+  
+  [Fact]
+  public async Task GetByIdAsync_ReturnsOkWithOrganization()
+  {
+    // Arrange
+    var mockRepo = new Mock<IOrganizationRepository>();
+    mockRepo.Setup(repo => repo.GetByIdAsync(1))
+      .ReturnsAsync(new Organization
+      {
+        Id = 1,
+        Name = "Nashville Leadership Group",
+        CauseId = 2,
+        Description = "Nashville Leadership Group is the leading organization in ...",
+        ImageURL = "image1.jpg",
+        IsFollowing = false,
+        Location = "Nashville, TN"
+      });
+    var controller = new OrganizationController(mockRepo.Object);
+
+    // Act
+    var result = await controller.GetByIdTask(1);
+    var okResult = Assert.IsType<OkObjectResult>(result);
+
+    // Assert
+    Assert.IsType<OrganizationDto>(okResult.Value);
+  }
+  
+  [Fact]
+  public async Task AddAsync_ReturnsCreatedResultWhenOrganizationIsValid()
+  {
+    {
+      // Arrange
+      
+    
+      // Act
+      
+    
+      // Assert
+      
+  
+    }
+  }
+  
+  [Fact]
+  public async Task UpdateAsync_ReturnsNotFoundWhenOrganizationDoesNotExist()
+  {
+    {
+      // Arrange
+    
+    
+      // Act
+    
+    
+      // Assert
+  
+  
+    }
+  }
+  
+  [Fact]
+  public async Task DeleteAsync_ReturnsNoContentWhenOrganizationExist()
+  {
+    {
+      // Arrange
+    
+    
+      // Act
+    
+    
+      // Assert
+  
+  
+    }
+  }
 }
