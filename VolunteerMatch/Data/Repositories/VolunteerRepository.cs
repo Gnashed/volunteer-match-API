@@ -16,7 +16,7 @@ public class VolunteerRepository : IVolunteerRepository
   // Controller action methods
   public async Task<ICollection<Volunteer>> GetAllAsync() => await _context.Volunteers.ToListAsync();
 
-  public async Task<Volunteer> GetByIdAsync(int id)
+  public async Task<Volunteer?> GetByIdAsync(int id)
   {
     var volunteer = await _context.Volunteers.FindAsync(id);
     // The code commented here was causing a unit test for VolunteerRepository to fail.

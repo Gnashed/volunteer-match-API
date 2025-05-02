@@ -39,6 +39,11 @@ public class VolunteerController : ControllerBase
   {
     var volunteer = await _volunteerRepository.GetByIdAsync(id);
 
+    if (volunteer == null)
+    {
+      return NotFound();
+    }
+    
     var volunteerDto = new VolunteerDto
     {
       Id = volunteer.Id,
