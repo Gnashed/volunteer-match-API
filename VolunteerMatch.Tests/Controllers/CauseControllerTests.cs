@@ -131,7 +131,7 @@ public class CauseControllerTests
     };
     
     // Act
-    var result = await controller.PatchAsyncTask(1, request);
+    var result = await controller.PatchAsyncTask(999, request);
 
     // Assert
     Assert.IsType<NotFoundResult>(result);

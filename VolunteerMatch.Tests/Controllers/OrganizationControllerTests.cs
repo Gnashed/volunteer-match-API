@@ -106,14 +106,26 @@ public class OrganizationControllerTests
   {
     {
       // Arrange
+      var mockRepo = new Mock<IOrganizationRepository>();
+      mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Organization>()))
+        .Returns(Task.CompletedTask);
+      var controller = new OrganizationController(mockRepo.Object);
       
-    
       // Act
-      
-    
+      var result = await controller.AddAsyncTask(new CreateOrganizationRequest
+      {
+        Name = "Brother Charity Group",
+        CauseId = 12,
+        Description = "Since 2017, the founding member of ...",
+        ImageURL = "image.jpg",
+        IsFollowing = false,
+        Location = "Dallas, TX"
+      });
+
       // Assert
-      
-  
+      var createdResult = Assert.IsType<CreatedAtActionResult>(result);
+      var dto = Assert.IsType<OrganizationDto>(createdResult.Value);
+      Assert.Equal("Brother Charity Group",  dto.Name);
     }
   }
   
@@ -122,14 +134,70 @@ public class OrganizationControllerTests
   {
     {
       // Arrange
-    
-    
+      var mockRepo = new Mock<IOrganizationRepository>();
+      mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
+        .ReturnsAsync((Organization?)null);
+      var controller = new OrganizationController(mockRepo.Object);
+      var request = new UpdateOrganizationRequest
+      {
+        Name = "Global Alliance",
+        ImageURL = "image.jpg",
+        Description = "Global Alliance was founded in 1998 right after the ...",
+        Location = "New York, NY",
+        CauseId = 12,
+        IsFollowing = false,
+      };
+
       // Act
-    
-    
+      var result = await controller.UpdateAsTask(999, request);
+
       // Assert
+      Assert.IsType<NotFoundResult>(result);
+    }
+  }
   
-  
+  [Fact]
+  public async Task UpdateAsync_ReturnsOkWhenOrganizationDoesExist()
+  {
+    {
+      // Arrange
+      var existingOrganization = new Organization()
+      {
+        Id = 1,
+        Name = "Global Allia",
+        ImageURL = "image.jpg",
+        Description = "Global Alliance was founded in 1998 right after the ...",
+        Location = "New York, NY",
+        CauseId = 12,
+        IsFollowing = false,
+      };
+      
+      var mockRepo = new Mock<IOrganizationRepository>();
+      mockRepo.Setup(repo => repo.GetByIdAsync(1))
+        .ReturnsAsync(existingOrganization);
+      // To simulate a success
+      mockRepo.Setup(repo => repo.UpdateAsync(It.IsAny<Organization>()))
+        .Returns(Task.CompletedTask);
+      var controller = new OrganizationController(mockRepo.Object);
+
+      var updateRequest = new UpdateOrganizationRequest
+      {
+        Name = "Global Alliance",
+        ImageURL = "image.jpg",
+        Description = "Global Alliance was founded in 1998 right after the ...",
+        Location = "New York, NY",
+        CauseId = 12,
+        IsFollowing = false,
+      };
+
+      // Act
+      var result = await controller.UpdateAsTask(1, updateRequest);
+
+      // Assert
+      var okResult = Assert.IsType<OkObjectResult>(result);
+      var returnedOrganizationDto = Assert.IsType<OrganizationDto>(okResult.Value);
+      
+      Assert.Equal("Global Alliance",  returnedOrganizationDto.Name);
     }
   }
   
@@ -138,14 +206,25 @@ public class OrganizationControllerTests
   {
     {
       // Arrange
-    
-    
+      var mockRepo = new Mock<IOrganizationRepository>();
+      mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
+        .ReturnsAsync(new Organization
+        {
+          Id = 1,
+          Name = "Los Angeles Group for Neurodiversity",
+          CauseId = 3,
+          Location = "Los Angeles, CA",
+          IsFollowing = false,
+          ImageURL = "image.jpg",
+          Description = "Los Angeles Group was founded in 1998 right after the ..."
+        });
+      var controller = new OrganizationController(mockRepo.Object);
+      
       // Act
-    
-    
+      var result = await controller.DeleteASyncTask(2);
+      
       // Assert
-  
-  
+      Assert.IsType<NoContentResult>(result);
     }
   }
 }
