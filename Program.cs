@@ -3,7 +3,6 @@ using volunteerMatch.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +25,7 @@ builder.Services.Configure<JsonOptions>(options =>
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
-//  CORS Policy (Allow frontend at `localhost:3000`)
+// CORS Policy (Allow frontend at localhost:3000)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -38,7 +37,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// ✅ Enable CORS Middleware BEFORE routing
+// Enable CORS Middleware
 app.UseCors("AllowFrontend");
 
 if (app.Environment.IsDevelopment())
@@ -53,7 +52,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<VolunteerMatchDbContext>();
 
-    // Only seed if DB is empty
+    // Seed Causes
     if (!db.Causes.Any())
     {
         db.Causes.AddRange(volunteerMatch.Data.CauseData.Causes.Select(c => new Cause
@@ -66,6 +65,7 @@ using (var scope = app.Services.CreateScope())
         db.SaveChanges();
     }
 
+    // Seed Volunteers
     if (!db.Volunteers.Any())
     {
         db.Volunteers.AddRange(volunteerMatch.Data.VolunteerData.Volunteers.Select(v => new Volunteer
@@ -80,26 +80,34 @@ using (var scope = app.Services.CreateScope())
         db.SaveChanges();
     }
 
+    // Seed Organizations (with many-to-many via OrganizationCauses)
     if (!db.Organizations.Any())
     {
-        db.Organizations.AddRange(volunteerMatch.Data.OrganizationData.Organizations.Select(o => new Organization
-        {
-            Id = o.Id,
-            Name = o.Name,
-            Description = o.Description,
-            ImageURL = o.ImageURL,
-            Location = o.Location,
-            CauseId = o.CauseId,
-            IsFollowing = o.IsFollowing,
-            VolunteerId = 1 // assign a valid volunteerId
-        }));
+        var orgEntities = OrganizationData.Organizations
+            .Select(dto => new Organization
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                Description = dto.Description,
+                ImageURL = dto.ImageURL,
+                Location = dto.Location,
+                IsFollowing = dto.IsFollowing,
+                VolunteerId = 1,
+                OrganizationCauses = dto.CauseIds
+                    .Select(cid => new OrganizationCause { CauseId = cid })
+                    .ToList()
+            })
+            .ToList();
+
+        db.Organizations.AddRange(orgEntities);
         db.SaveChanges();
     }
 }
 
-// =============================
+//
 // VOLUNTEERS
-// =============================
+//
+
 app.MapGet("/volunteers", async (VolunteerMatchDbContext db) =>
     await db.Volunteers.ToListAsync());
 
@@ -118,9 +126,11 @@ app.MapGet("/volunteers/{volunteerId}/followed-organizations", async (int volunt
         .Where(f => f.VolunteerId == volunteerId)
         .Select(f => f.OrganizationId)
         .ToListAsync();
+
     var organizations = await db.Organizations
         .Where(o => orgIds.Contains(o.Id))
         .ToListAsync();
+
     return Results.Ok(organizations);
 });
 
@@ -151,22 +161,31 @@ app.MapDelete("/volunteers/{id}", async (int id, VolunteerMatchDbContext db) =>
     return Results.NoContent();
 });
 
-// =============================
+//
 // ORGANIZATIONS
-// =============================
+//
+
 app.MapGet("/organizations", async (HttpRequest request, VolunteerMatchDbContext db) =>
 {
     var causeIdParam = request.Query["causeId"].FirstOrDefault();
 
     if (!string.IsNullOrEmpty(causeIdParam) && int.TryParse(causeIdParam, out int causeId))
     {
-        return Results.Ok(await db.Organizations
-            .Include(o => o.Cause)
-            .Where(o => o.CauseId.Contains(causeId))
-            .ToListAsync());
+        var filtered = await db.Organizations
+            .Where(o => o.OrganizationCauses.Any(oc => oc.CauseId == causeId))
+            .Include(o => o.OrganizationCauses)
+                .ThenInclude(oc => oc.Cause)
+            .ToListAsync();
+
+        return Results.Ok(filtered);
     }
 
-    return Results.Ok(await db.Organizations.Include(o => o.Cause).ToListAsync());
+    var allOrgs = await db.Organizations
+        .Include(o => o.OrganizationCauses)
+            .ThenInclude(oc => oc.Cause)
+        .ToListAsync();
+
+    return Results.Ok(allOrgs);
 });
 
 app.MapGet("/organizations/{organizationId}/volunteers", async (int organizationId, VolunteerMatchDbContext db) =>
@@ -186,7 +205,16 @@ app.MapGet("/organizations/{organizationId}/volunteers", async (int organization
 });
 
 app.MapGet("/organizations/{id}", async (int id, VolunteerMatchDbContext db) =>
-    await db.Organizations.Include(o => o.Cause).FirstOrDefaultAsync(o => o.Id == id));
+{
+    var org = await db.Organizations
+        .Include(o => o.OrganizationCauses)
+            .ThenInclude(oc => oc.Cause)
+        .FirstOrDefaultAsync(o => o.Id == id);
+
+    return org is not null
+        ? Results.Ok(org)
+        : Results.NotFound();
+});
 
 app.MapPost("/organizations", async (Organization organization, VolunteerMatchDbContext db) =>
 {
@@ -215,9 +243,10 @@ app.MapDelete("/organizations/{id}", async (int id, VolunteerMatchDbContext db) 
     return Results.NoContent();
 });
 
-// =============================
+//
 // CAUSES
-// =============================
+//
+
 app.MapGet("/causes", async (VolunteerMatchDbContext db) =>
     await db.Causes.Include(c => c.Organizations).ToListAsync());
 
@@ -250,66 +279,5 @@ app.MapDelete("/causes/{id}", async (int id, VolunteerMatchDbContext db) =>
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
-
-// =============================
-// ORGANIZATION FOLLOWERS
-// =============================
-app.MapGet("/organizationfollowers", async (VolunteerMatchDbContext db) =>
-    await db.OrganizationFollowers.ToListAsync());
-
-app.MapGet("/organizationfollowers/check", async (int volunteerId, int organizationId, VolunteerMatchDbContext db) =>
-{
-    var isFollowing = await db.OrganizationFollowers
-        .AnyAsync(f => f.VolunteerId == volunteerId && f.OrganizationId == organizationId);
-    return Results.Ok(new { isFollowing });
-});
-
-app.MapPost("/organizationfollowers", async (OrganizationFollower follower, VolunteerMatchDbContext db) =>
-{
-    db.OrganizationFollowers.Add(follower);
-    await db.SaveChangesAsync();
-    return Results.Created($"/organizationfollowers/{follower.VolunteerId}/{follower.OrganizationId}", follower);
-});
-
-app.MapDelete("/organizationfollowers/{volunteerId}/{organizationId}", async (int volunteerId, int organizationId, VolunteerMatchDbContext db) =>
-{
-    var record = await db.OrganizationFollowers.FindAsync(volunteerId, organizationId);
-    if (record == null) return Results.NotFound();
-
-    db.OrganizationFollowers.Remove(record);
-    await db.SaveChangesAsync();
-    return Results.NoContent();
-});
-
-// =============================
-// VOLUNTEER FOLLOWERS
-// =============================
-app.MapGet("/volunteerfollowers", async (VolunteerMatchDbContext db) =>
-    await db.VolunteerFollowers.ToListAsync());
-
-app.MapGet("/volunteerfollowers/check", async (int followerId, int followingId, VolunteerMatchDbContext db) =>
-{
-    var isFollowing = await db.VolunteerFollowers
-        .AnyAsync(f => f.FollowerId == followerId && f.FollowedId == followingId);
-    return Results.Ok(new { isFollowing });
-});
-
-app.MapPost("/volunteerfollowers", async (VolunteerFollower follower, VolunteerMatchDbContext db) =>
-{
-    db.VolunteerFollowers.Add(follower);
-    await db.SaveChangesAsync();
-    return Results.Created($"/volunteerfollowers/{follower.FollowerId}/{follower.FollowedId}", follower);
-});
-
-app.MapDelete("/volunteerfollowers/{followerId}/{followingId}", async (int followerId, int followingId, VolunteerMatchDbContext db) =>
-{
-    var record = await db.VolunteerFollowers.FindAsync(followerId, followingId);
-    if (record == null) return Results.NotFound();
-
-    db.VolunteerFollowers.Remove(record);
-    await db.SaveChangesAsync();
-    return Results.NoContent();
-});
-
 
 app.Run();
