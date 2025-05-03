@@ -165,13 +165,43 @@ public class VolunteerControllerTests
   public async Task UpdateAsync_ReturnsOkWhenVolunteerDoesExist()
   {
     // Arrange
+    var existingVolunteer = new Volunteer
+    {
+      Id = 30,
+      FirstName = "Chef",
+      LastName = "Curry",
+      Uid = "GWJpl---667542",
+      ImageUrl = "picture.jpg",
+      Email = "steph_curry@email.com"
+    };
     
+    var mockRepo = new Mock<IVolunteerRepository>();
+    mockRepo.Setup(repo => repo.GetByIdAsync(30))
+      .ReturnsAsync(existingVolunteer);
+    mockRepo.Setup(repo => repo.UpdateAsync(It.IsAny<Volunteer>()))
+      .Returns(Task.CompletedTask);
+    
+    var controller = new VolunteerController(mockRepo.Object);
+    var updateVolunteer = new UpdateVolunteerRequest
+    {
+      FirstName = "Steph",
+      LastName = "Curry",
+      Email = "steph_curry@email.com",
+      ImageUrl = "picture.jpg",
+      Uid = "GWJpl---667542"
+    };
     
     // Act
-    
+    var result = await controller.PatchAsyncTask(30, updateVolunteer);
+    var okResult = Assert.IsType<OkObjectResult>(result);
+    var returnedVolunteerDto = Assert.IsType<VolunteerDto>(okResult.Value);
     
     // Assert
-    
+    Assert.Equal(updateVolunteer.FirstName, returnedVolunteerDto.FirstName);
+    Assert.Equal(updateVolunteer.LastName, returnedVolunteerDto.LastName);
+    Assert.Equal(updateVolunteer.Email, returnedVolunteerDto.Email);
+    Assert.Equal(updateVolunteer.ImageUrl, returnedVolunteerDto.ImageUrl);
+    Assert.Equal(updateVolunteer.Uid, returnedVolunteerDto.Uid);
   }
 
   [Fact]
