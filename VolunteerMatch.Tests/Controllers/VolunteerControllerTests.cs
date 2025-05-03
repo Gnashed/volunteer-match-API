@@ -106,14 +106,31 @@ public class VolunteerControllerTests
   {
     {
       // Arrange
-      
-    
-      // Act
-      
-    
-      // Assert
-      
+      var mockRepo = new Mock<IVolunteerRepository>();
+      mockRepo.Setup(repo => repo.AddAsync(It.IsAny<Volunteer>()))
+        .Returns(Task.CompletedTask);
 
+      var controller = new VolunteerController(mockRepo.Object);
+
+      // Act
+      var result = await controller.PostAsyncTask(new CreateVolunteerRequest
+      {
+        FirstName = "Tion",
+        LastName = "Blackmon",
+        Email =  "tion_blackmon@email.com",
+        ImageUrl = "picture.jpg",
+        Uid = "YhJpl---987123"
+      });
+      
+      // Assert
+      var createdResult = Assert.IsType<CreatedAtActionResult>(result);
+      var volunteerDto = Assert.IsType<VolunteerDto>(createdResult.Value);
+      
+      Assert.Equal("Tion", volunteerDto.FirstName);
+      Assert.Equal("Blackmon", volunteerDto.LastName);
+      Assert.Equal("tion_blackmon@email.com", volunteerDto.Email);
+      Assert.Equal("YhJpl---987123", volunteerDto.Uid);
+      Assert.Equal("picture.jpg", volunteerDto.ImageUrl);
     }
   }
 
