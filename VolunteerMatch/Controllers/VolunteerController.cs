@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VolunteerMatch.Data.Repositories.Interfaces;
 using VolunteerMatch.Models;
@@ -18,6 +19,7 @@ public class VolunteerController : ControllerBase
   }
 
   [HttpGet]
+  [Authorize]
   public async Task<IActionResult> GetAllAsyncTask()
   {
     var volunteers = await _volunteerRepository.GetAllAsync();
