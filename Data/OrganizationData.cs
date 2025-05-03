@@ -5,147 +5,107 @@ namespace volunteerMatch.Data
 {
     public static class OrganizationData
     {
-        public static List<Organization> Organizations = new List<Organization>
+        public static List<OrganizationSeedDto> Organizations = new List<OrganizationSeedDto>
         {
-            new Organization
+            new OrganizationSeedDto
             {
-                Id = 1,
-                VolunteerId = 0,
-                Name = "Feeding America",
-                ImageURL = "https://eu-images.contentstack.com/v3/assets/blte5a51c2d28bbcc9c/bltbf9b120b9c69987f/6647853f1bf9d6ed16038bc6/Feeding_America.png?disable=upscale&width=1200&height=630&fit=crop",
+                Id          = 1,
+                Name        = "Feeding America",
                 Description = "Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.",
-                Location = "Room 1448",
-                CauseId = new List<int> { 1 },
+                ImageURL    = "https://eu-images.contentstack.com/v3/assets/blte5a51c2d28bbcc9c/bltbf9b120b9c69987f/6647853f1bf9d6ed16038bc6/Feeding_America.png?disable=upscale&width=1200&height=630&fit=crop",
+                Location    = "Room 1448",
                 IsFollowing = true,
-                Volunteer = null,
-                Cause = null,
-                OrganizationFollowers = new List<OrganizationFollower>()
+                CauseIds    = new List<int> { 1 }
             },
-            new Organization
+            new OrganizationSeedDto
             {
-                Id = 2,
-                VolunteerId = 0,
-                Name = "Good 360",
-                ImageURL = "https://good360.org/wp-content/uploads/2020/11/Good360-Logo-500x.jpg",
+                Id          = 2,
+                Name        = "Good 360",
                 Description = "Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.",
-                Location = "5th Floor",
-                CauseId = new List<int> { 2 },
+                ImageURL    = "https://good360.org/wp-content/uploads/2020/11/Good360-Logo-500x.jpg",
+                Location    = "5th Floor",
                 IsFollowing = true,
-                Volunteer = null,
-                Cause = null,
-                OrganizationFollowers = new List<OrganizationFollower>()
+                CauseIds    = new List<int> { 2 }
             },
-            new Organization
+            new OrganizationSeedDto
             {
-                Id = 3,
-                VolunteerId = 0,
-                Name = "St. Jude Children's Research Hospital",
-                ImageURL = "https://mma.prnewswire.com/media/613525/St_Jude_Childrens_Research_Hospital_Logo.jpg?p=twitter",
+                Id          = 3,
+                Name        = "St. Jude Children's Research Hospital",
                 Description = "Fusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl. Nunc rhoncus dui vel sem.",
-                Location = "Suite 29",
-                CauseId = new List<int> { 3 },
+                ImageURL    = "https://mma.prnewswire.com/media/613525/St_Jude_Childrens_Research_Hospital_Logo.jpg?p=twitter",
+                Location    = "Suite 29",
                 IsFollowing = true,
-                Volunteer = null,
-                Cause = null,
-                OrganizationFollowers = new List<OrganizationFollower>()
+                CauseIds    = new List<int> { 3 }
             },
-            new Organization
+            new OrganizationSeedDto
             {
-                Id = 4,
-                VolunteerId = 0,
-                Name = "United Way Worldwide",
-                ImageURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/United_Way_Worldwide_logo.svg/1200px-United_Way_Worldwide_logo.svg.png",
+                Id          = 4,
+                Name        = "United Way Worldwide",
                 Description = "Fusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl. Nunc rhoncus dui vel sem.",
-                Location = "Apt 1957",
-                CauseId = new List<int> { 4 },
+                ImageURL    = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/United_Way_Worldwide_logo.svg/1200px-United_Way_Worldwide_logo.svg.png",
+                Location    = "Apt 1957",
                 IsFollowing = true,
-                Volunteer = null,
-                Cause = null,
-                OrganizationFollowers = new List<OrganizationFollower>()
+                CauseIds    = new List<int> { 4 }
             },
-            new Organization
+            new OrganizationSeedDto
             {
-                Id = 5,
-                VolunteerId = 0,
-                Name = "Direct Relief",
-                ImageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2fOL-c3xiQ-mY3AY8sZW2f-Wazzmz_tP6cw&s",
+                Id          = 5,
+                Name        = "Direct Relief",
                 Description = "Fusce consequat. Nulla nisl. Nunc nisl.",
-                Location = "Room 399",
-                CauseId = new List<int> { 5 },
+                ImageURL    = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2fOL-c3xiQ-mY3AY8sZW2f-Wazzmz_tP6cw&s",
+                Location    = "Room 399",
                 IsFollowing = false,
-                Volunteer = null,
-                Cause = null,
-                OrganizationFollowers = new List<OrganizationFollower>()
+                CauseIds    = new List<int> { 5 }
             },
-            new Organization
+            new OrganizationSeedDto
             {
-                Id = 6,
-                VolunteerId = 0,
-                Name = "Salvation Army",
-                ImageURL = "https://upload.wikimedia.org/wikipedia/en/thumb/c/c4/The_Salvation_Army.svg/1200px-The_Salvation_Army.svg.png",
+                Id          = 6,
+                Name        = "Salvation Army",
                 Description = "In congue. Etiam justo. Etiam pretium iaculis justo.",
-                Location = "Room 418",
-                CauseId = new List<int> { 6 },
+                ImageURL    = "https://upload.wikimedia.org/wikipedia/en/thumb/c/c4/The_Salvation_Army.svg/1200px-The_Salvation_Army.svg.png",
+                Location    = "Room 418",
                 IsFollowing = true,
-                Volunteer = null,
-                Cause = null,
-                OrganizationFollowers = new List<OrganizationFollower>()
+                CauseIds    = new List<int> { 6 }
             },
-            new Organization
+            new OrganizationSeedDto
             {
-                Id = 7,
-                VolunteerId = 0,
-                Name = "Habitat for Humanity International",
-                ImageURL = "https://over50andoverseas.com/wp-content/uploads/2018/11/habitat-for-humanity-logo.jpg",
+                Id          = 7,
+                Name        = "Habitat for Humanity International",
                 Description = "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.",
-                Location = "PO Box 9244",
-                CauseId = new List<int> { 7 },
+                ImageURL    = "https://over50andoverseas.com/wp-content/uploads/2018/11/habitat-for-humanity-logo.jpg",
+                Location    = "PO Box 9244",
                 IsFollowing = true,
-                Volunteer = null,
-                Cause = null,
-                OrganizationFollowers = new List<OrganizationFollower>()
+                CauseIds    = new List<int> { 7 }
             },
-            new Organization
+            new OrganizationSeedDto
             {
-                Id = 8,
-                VolunteerId = 0,
-                Name = "Americares",
-                ImageURL = "https://www.americares.org/wp-content/uploads/Americares-Logo_02big.gif",
+                Id          = 8,
+                Name        = "Americares",
                 Description = "Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
-                Location = "17th Floor",
-                CauseId = new List<int> { 8 },
+                ImageURL    = "https://www.americares.org/wp-content/uploads/Americares-Logo_02big.gif",
+                Location    = "17th Floor",
                 IsFollowing = false,
-                Volunteer = null,
-                Cause = null,
-                OrganizationFollowers = new List<OrganizationFollower>()
+                CauseIds    = new List<int> { 8 }
             },
-            new Organization
+            new OrganizationSeedDto
             {
-                Id = 9,
-                VolunteerId = 0,
-                Name = "Goodwill Industries International",
-                ImageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv032LFny9_SAG8KQK6-jiOd4Ku65DmBX43Q&s",
+                Id          = 9,
+                Name        = "Goodwill Industries International",
                 Description = "Fusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl. Nunc rhoncus dui vel sem.",
-                Location = "Suite 68",
-                CauseId = new List<int> { 9 },
+                ImageURL    = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv032LFny9_SAG8KQK6-jiOd4Ku65DmBX43Q&s",
+                Location    = "Suite 68",
                 IsFollowing = false,
-                Volunteer = null,
-                Cause = null,
-                OrganizationFollowers = new List<OrganizationFollower>()
+                CauseIds    = new List<int> { 9 }
             },
-            new Organization
+            new OrganizationSeedDto
             {
-                Id = 10,
-                VolunteerId = 0,
-                Name = "Boys & Girls Clubs of America",
-                ImageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNPs6VOZGUeyc0jibA4r7JN-2zt_BP_OAssQ&s",
+                Id          = 10,
+                Name        = "Boys & Girls Clubs of America",
                 Description = "In congue. Etiam justo. Etiam pretium iaculis justo.",
-                Location = "Suite 37",
-                CauseId = new List<int> { 10 },
+                ImageURL    = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNPs6VOZGUeyc0jibA4r7JN-2zt_BP_OAssQ&s",
+                Location    = "Suite 37",
                 IsFollowing = false,
-                Volunteer = null,
-                Cause = null,
-                OrganizationFollowers = new List<OrganizationFollower>()
+                CauseIds    = new List<int> { 10 }
             }
         };
     }
