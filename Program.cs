@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 using volunteerMatch.Models;
 using volunteerMatch.Data;
 using Microsoft.EntityFrameworkCore;
@@ -24,9 +26,16 @@ builder.Services.AddDbContext<VolunteerMatchDbContext>(opts =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Prevent circular JSON
+// JSON settings: camel‑case plus cycle‑ignore
 builder.Services.Configure<JsonOptions>(opts =>
-    opts.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+{
+    // produce camelCased JSON keys
+    opts.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    opts.SerializerOptions.DictionaryKeyPolicy   = JsonNamingPolicy.CamelCase;
+
+    // still ignore cycles
+    opts.SerializerOptions.ReferenceHandler      = ReferenceHandler.IgnoreCycles;
+});
 
 // CORS
 builder.Services.AddCors(opts =>
