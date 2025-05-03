@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Http;
 var builder = WebApplication.CreateBuilder(args);
 
 // Read connection string from user-secrets
-var connStr = builder.Configuration["VolunteerMatchDbConnectionString"];
+var connStr = builder.Configuration["volunteer-match-APIDbConnectionString"];
 if (string.IsNullOrEmpty(connStr))
     throw new InvalidOperationException(
-        "Connection string 'VolunteerMatchDbConnectionString' not found.");
+        "Connection string 'volunteer-match-APIDbConnectionString' not found.");
 
 // Register EF Core with Npgsql
 builder.Services.AddDbContext<VolunteerMatchDbContext>(opts =>
@@ -210,7 +210,6 @@ app.MapGet("/organizations/{organizationId}/volunteers", async (int organization
 })
    .WithName("GetOrganizationVolunteers");
 
-// Use OrganizationSeedDto from Models
 app.MapPost("/organizations", async (OrganizationSeedDto dto, VolunteerMatchDbContext db) =>
 {
     var org = new Organization
@@ -220,7 +219,7 @@ app.MapPost("/organizations", async (OrganizationSeedDto dto, VolunteerMatchDbCo
         ImageURL          = dto.ImageURL,
         Location          = dto.Location,
         IsFollowing       = dto.IsFollowing,
-        VolunteerId       = 1,  // or dto.VolunteerId if added
+        VolunteerId       = dto.VolunteerId,
         OrganizationCauses = dto.CauseIds.Select(cid => new OrganizationCause { CauseId = cid }).ToList()
     };
     db.Organizations.Add(org);
@@ -262,6 +261,118 @@ app.MapDelete("/organizations/{id}", async (int id, VolunteerMatchDbContext db) 
 })
    .WithName("DeleteOrganization");
 
-// ... remaining endpoints unchanged ...
+// =============================
+// CAUSES
+// =============================
+app.MapGet("/causes", async (VolunteerMatchDbContext db) =>
+    await db.Causes
+        .Include(c => c.OrganizationCauses)
+            .ThenInclude(oc => oc.Organization)
+        .ToListAsync())
+   .WithName("GetCauses");
+
+app.MapGet("/causes/{id}", async (int id, VolunteerMatchDbContext db) =>
+{
+    var c = await db.Causes
+        .Include(ca => ca.OrganizationCauses)
+            .ThenInclude(oc => oc.Organization)
+        .FirstOrDefaultAsync(ca => ca.Id == id);
+    return c is not null ? Results.Ok(c) : Results.NotFound();
+})
+   .WithName("GetCauseById");
+
+app.MapPost("/causes", async (Cause cause, VolunteerMatchDbContext db) =>
+{
+    db.Causes.Add(cause);
+    await db.SaveChangesAsync();
+    return Results.Created($"/causes/{cause.Id}", cause);
+})
+   .WithName("CreateCause");
+
+app.MapPut("/causes/{id}", async (int id, Cause input, VolunteerMatchDbContext db) =>
+{
+    var cause = await db.Causes.FindAsync(id);
+    if (cause is null) return Results.NotFound();
+    db.Entry(cause).CurrentValues.SetValues(input);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+})
+   .WithName("UpdateCause");
+
+app.MapDelete("/causes/{id}", async (int id, VolunteerMatchDbContext db) =>
+{
+    var cause = await db.Causes.FindAsync(id);
+    if (cause is null) return Results.NotFound();
+    db.Causes.Remove(cause);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+})
+   .WithName("DeleteCause");
+
+// =============================
+// ORGANIZATION FOLLOWERS
+// =============================
+app.MapGet("/organizationfollowers", async (VolunteerMatchDbContext db) =>
+    await db.OrganizationFollowers.ToListAsync())
+   .WithName("GetOrganizationFollowers");
+
+app.MapGet("/organizationfollowers/check", async (int volunteerId, int organizationId, VolunteerMatchDbContext db) =>
+{
+    var isFollowing = await db.OrganizationFollowers
+        .AnyAsync(f => f.VolunteerId == volunteerId && f.OrganizationId == organizationId);
+    return Results.Ok(new { isFollowing });
+})
+   .WithName("CheckOrganizationFollower");
+
+app.MapPost("/organizationfollowers", async (OrganizationFollower f, VolunteerMatchDbContext db) =>
+{
+    db.OrganizationFollowers.Add(f);
+    await db.SaveChangesAsync();
+    return Results.Created($"/organizationfollowers/{f.VolunteerId}/{f.OrganizationId}", f);
+})
+   .WithName("CreateOrganizationFollower");
+
+app.MapDelete("/organizationfollowers/{volunteerId}/{organizationId}", async (int volunteerId, int organizationId, VolunteerMatchDbContext db) =>
+{
+    var rec = await db.OrganizationFollowers.FindAsync(volunteerId, organizationId);
+    if (rec is null) return Results.NotFound();
+    db.OrganizationFollowers.Remove(rec);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+})
+   .WithName("DeleteOrganizationFollower");
+
+// =============================
+// VOLUNTEER FOLLOWERS
+// =============================
+app.MapGet("/volunteerfollowers", async (VolunteerMatchDbContext db) =>
+    await db.VolunteerFollowers.ToListAsync())
+   .WithName("GetVolunteerFollowers");
+
+app.MapGet("/volunteerfollowers/check", async (int followerId, int followingId, VolunteerMatchDbContext db) =>
+{
+    var isFollowing = await db.VolunteerFollowers
+        .AnyAsync(f => f.FollowerId == followerId && f.FollowedId == followingId);
+    return Results.Ok(new { isFollowing });
+})
+   .WithName("CheckVolunteerFollower");
+
+app.MapPost("/volunteerfollowers", async (VolunteerFollower f, VolunteerMatchDbContext db) =>
+{
+    db.VolunteerFollowers.Add(f);
+    await db.SaveChangesAsync();
+    return Results.Created($"/volunteerfollowers/{f.FollowerId}/{f.FollowedId}", f);
+})
+   .WithName("CreateVolunteerFollower");
+
+app.MapDelete("/volunteerfollowers/{followerId}/{followingId}", async (int followerId, int followingId, VolunteerMatchDbContext db) =>
+{
+    var rec = await db.VolunteerFollowers.FindAsync(followerId, followingId);
+    if (rec is null) return Results.NotFound();
+    db.VolunteerFollowers.Remove(rec);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+})
+   .WithName("DeleteVolunteerFollower");
 
 app.Run();
