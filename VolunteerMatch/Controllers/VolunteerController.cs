@@ -93,6 +93,11 @@ public class VolunteerController : ControllerBase
   public async Task<IActionResult> PatchAsyncTask(int id, [FromBody] UpdateVolunteerRequest request)
   {
     var volunteerToUpdate = await _volunteerRepository.GetByIdAsync(id);
+
+    if (volunteerToUpdate == null)
+    {
+      return NotFound();
+    }
     
     volunteerToUpdate.FirstName = request.FirstName;
     volunteerToUpdate.LastName = request.LastName;

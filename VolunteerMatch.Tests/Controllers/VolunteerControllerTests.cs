@@ -139,14 +139,25 @@ public class VolunteerControllerTests
   {
     {
       // Arrange
-    
-    
+      var mockRepo = new Mock<IVolunteerRepository>();
+      mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>()))
+        .ReturnsAsync((Volunteer?)null);
+      
+      var controller = new VolunteerController(mockRepo.Object);
+      var request = new UpdateVolunteerRequest
+      {
+        FirstName = "Steph",
+        LastName = "Curry",
+        Email = "steph_curry@email.com",
+        ImageUrl = "picture.jpg",
+        Uid = "GWJpl---667542"
+      };
+      
       // Act
-    
-    
+      var result = await controller.PatchAsyncTask(1, request);
+
       // Assert
-
-
+      Assert.IsType<NotFoundResult>(result);
     }
   }
 
