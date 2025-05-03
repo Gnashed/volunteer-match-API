@@ -6,8 +6,49 @@ using VolunteerMatch.Data.Repositories.Interfaces;
 // using VolunteerMatch.Services;
 // using VolunteerMatch.Services.Interface;
 using VolunteerMatch.Data.Repositories;
+// The following imports are needed for handling token validation and key encoding.
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// The following keys are read from config (user secrets in this case).
+var jwtKey = builder.Configuration["JWT:Key"] ?? throw new Exception("Missing JWT key");
+var jwtIssuer = builder.Configuration["JWT:Issuer"] ?? "VolunteerMatch";
+var jwtAudience = builder.Configuration["JWT:Audience"] ?? "VolunteerMatchClient";
+
+// Just like the other services in Program.cs, we're adding JWT authentication to the service container.
+// Here we're specifically setting the default authentication and challenge scheme to JWT Bearer.
+// 
+builder.Services.AddAuthentication(options =>
+    {
+        // Tells .NET how to validate incoming request (check for a JWT in the `Authorization: Bearer <token>` header).
+        // Without it, [Authorize] wouldn't know which scheme to use to authenticate the request.
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        // Tells .NET what to do when a user hits a protected endpoint w/o being authenticated. In this case, ...
+        // it challenges the client with a 401 `Unauthorized`.
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    // Configures how incoming JWTs are validated.
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            // ValidateIssuer and ValidateAudience == ensures the token was meant for this app.
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            // Ensures it was signed with our key.
+            ValidateIssuerSigningKey = true,
+            // Ensures the token hasn't expired.
+            ValidateLifetime = true,
+
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            // Builds a secure key from our `jwtKey` string for signature validation.
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+        };
+    });
 
 builder.Services.AddCors(options =>
 {
@@ -51,9 +92,10 @@ builder.Services.AddScoped<IOrganizationFollowerRepository, OrganizationFollower
 
 // Register controllers
 builder.Services.AddControllers();
+// Adds authorization middleware which enables `[authorize]` on our controller endpoints.
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
-app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -62,6 +104,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
+
+// Validates JWTs issued to clients.
+app.UseAuthentication();    // Validates the JWT
+app.UseAuthorization();     // Enforces the `[authorize]` rules.
 app.UseHttpsRedirection();
 
 // ASP.NET Core will scan for controller endpoints and expose them. W/o this line, the controllers are not registered
