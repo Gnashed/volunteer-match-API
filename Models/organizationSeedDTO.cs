@@ -12,5 +12,8 @@ namespace volunteerMatch.Models
         public string Location { get; set; }
         public bool IsFollowing { get; set; }
         public List<int> CauseIds { get; set; }
+        
+        public int VolunteerId { get; set; }
+
     }
 }
