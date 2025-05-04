@@ -9,6 +9,7 @@ namespace VolunteerMatch.Controllers;
 
 [ApiController]
 [Route("api/volunteer")]
+[Authorize]
 public class VolunteerController : ControllerBase
 {
   private readonly IVolunteerRepository _volunteerRepository;
@@ -19,7 +20,6 @@ public class VolunteerController : ControllerBase
   }
 
   [HttpGet]
-  [Authorize]
   [Route("/api/volunteers")]
   public async Task<IActionResult> GetAllAsyncTask()
   {
@@ -125,8 +125,12 @@ public class VolunteerController : ControllerBase
   public async Task<IActionResult> DeleteAsyncTask(int id)
   {
     var volunteer = await _volunteerRepository.GetByIdAsync(id);
-
+    if (volunteer == null)
+    {
+      return NotFound();
+    }
     await _volunteerRepository.DeleteAsync(volunteer.Id);
+    
     return NoContent();
   }
 }

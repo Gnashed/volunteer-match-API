@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VolunteerMatch.Data.Repositories.Interfaces;
 using VolunteerMatch.Models;
@@ -8,6 +9,7 @@ namespace VolunteerMatch.Controllers;
 
 [ApiController]
 [Route("api/cause")]
+[Authorize]
 public class CauseController : ControllerBase
 {
   private readonly ICauseRepository _causeRepository;

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VolunteerMatch.Data.Repositories.Interfaces;
 using VolunteerMatch.Models;
@@ -6,6 +7,7 @@ namespace VolunteerMatch.Controllers;
 
 [ApiController]
 [Route("api/")]
+[Authorize]
 public class OrganizationFollowerController : ControllerBase
 {
   private readonly IOrganizationFollowerRepository _organizationFollowerRepository;
