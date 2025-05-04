@@ -20,7 +20,6 @@ var jwtAudience = builder.Configuration["JWT:Audience"] ?? "VolunteerMatchClient
 
 // Just like the other services in Program.cs, we're adding JWT authentication to the service container.
 // Here we're specifically setting the default authentication and challenge scheme to JWT Bearer.
-// 
 builder.Services.AddAuthentication(options =>
     {
         // Tells .NET how to validate incoming request (check for a JWT in the `Authorization: Bearer <token>` header).

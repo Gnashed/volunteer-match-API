@@ -20,6 +20,7 @@ public class VolunteerController : ControllerBase
 
   [HttpGet]
   [Authorize]
+  [Route("/api/volunteers")]
   public async Task<IActionResult> GetAllAsyncTask()
   {
     var volunteers = await _volunteerRepository.GetAllAsync();
