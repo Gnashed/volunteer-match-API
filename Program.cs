@@ -358,7 +358,7 @@ app.MapGet("/volunteerfollowers", async (VolunteerMatchDbContext db) =>
     await db.VolunteerFollowers.ToListAsync())
    .WithName("GetVolunteerFollowers");
 
-app.MapGet("/volunteerfollowers/check", async (int followerId, int followingId, VolunteerMatchDbContext db) =>
+app.MapGet("/volunteerfollowers/check", async (string followerId, string followingId, VolunteerMatchDbContext db) =>
 {
     var isFollowing = await db.VolunteerFollowers
         .AnyAsync(f => f.FollowerId == followerId && f.FollowedId == followingId);
@@ -374,7 +374,7 @@ app.MapPost("/volunteerfollowers", async (VolunteerFollower f, VolunteerMatchDbC
 })
    .WithName("CreateVolunteerFollower");
 
-app.MapDelete("/volunteerfollowers/{followerId}/{followingId}", async (int followerId, int followingId, VolunteerMatchDbContext db) =>
+app.MapDelete("/volunteerfollowers/{followerId}/{followingId}", async (string followerId, string followingId, VolunteerMatchDbContext db) =>
 {
     var rec = await db.VolunteerFollowers.FindAsync(followerId, followingId);
     if (rec is null) return Results.NotFound();
