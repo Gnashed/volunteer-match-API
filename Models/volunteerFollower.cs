@@ -7,7 +7,7 @@ namespace volunteerMatch.Models
         public string FollowerId { get; set; }
         public Volunteer Follower { get; set; }
 
-        public string FollowedId { get; set; }
+        public int FollowedId { get; set; }
         public Volunteer Followed { get; set; }
     }
 }
