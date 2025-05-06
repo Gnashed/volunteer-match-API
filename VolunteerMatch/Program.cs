@@ -1,10 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Http.Json;
-using VolunteerMatch.Data; // For ignoring cycling.
+using VolunteerMatch.Data;
 using VolunteerMatch.Data.Repositories.Interfaces;
-// using VolunteerMatch.Services;
-// using VolunteerMatch.Services.Interface;
 using VolunteerMatch.Data.Repositories;
 // The following imports are needed for handling token validation and key encoding.
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -69,11 +66,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-#region Check comment below this line.
-// Add this above the `var app = builder.Build();` line. The middle statement is the most important since it makes an
-// instance of the VolunteerMatchDbContext class available to our endpoints.
-
-// allows passing date times without time zone data 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // allows our api endpoints to access the database through Entity Framework Core. This was used prior to using Docker.
@@ -84,14 +76,11 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
-#endregion
 
-// Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register services for repository pattern here.
 builder.Services.AddScoped<ICauseRepository, CauseRepository>();
 builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
 builder.Services.AddScoped<IVolunteerRepository, VolunteerRepository>();
