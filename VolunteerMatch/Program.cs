@@ -107,6 +107,10 @@ var app = builder.Build();
 
 // This is a lifecycle hook that automatically runs migrations on startup. It ensures Postgres database schema is up to ...
 // date with our latest EF Core migrations.
+//
+// A lifecycle hook is a place in our app's startup or runtime process where we can "hook in" and run custom logic at
+// a specific moment in the app's life (startup, shutdown, or handling a request).
+//
 // The line below creates a new service scope. It's created temporarily to resolve scoped services like DbContext. The ...
 // scope is disposed of when finished (this is achieved with 'using'). 
 using (var scope = app.Services.CreateScope())
