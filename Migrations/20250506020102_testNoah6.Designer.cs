@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace VolunteerMatch.Migrations
 {
     [DbContext(typeof(VolunteerMatchDbContext))]
-    partial class VolunteerMatchDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250506020102_testNoah6")]
+    partial class testNoah6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,8 +159,8 @@ namespace VolunteerMatch.Migrations
                     b.Property<string>("FollowerId")
                         .HasColumnType("text");
 
-                    b.Property<int>("FollowedId")
-                        .HasColumnType("integer");
+                    b.Property<string>("FollowedId")
+                        .HasColumnType("text");
 
                     b.HasKey("FollowerId", "FollowedId");
 
@@ -224,6 +227,7 @@ namespace VolunteerMatch.Migrations
                     b.HasOne("volunteerMatch.Models.Volunteer", "Followed")
                         .WithMany("Followed")
                         .HasForeignKey("FollowedId")
+                        .HasPrincipalKey("Uid")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

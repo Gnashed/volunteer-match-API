@@ -35,20 +35,26 @@ public class VolunteerMatchDbContext : DbContext
         // ------------------------
         // VolunteerFollower setup
         // ------------------------
-        modelBuilder.Entity<VolunteerFollower>()
-            .HasKey(vf => new { vf.FollowerId, vf.FollowedId });
 
-        modelBuilder.Entity<VolunteerFollower>()
-            .HasOne(vf => vf.Follower)
-            .WithMany(v => v.Followers)
-            .HasForeignKey(vf => vf.FollowerId)
-            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Volunteer>()
+        .HasAlternateKey(v => v.Uid); // Ensure Uid is marked as an alternate key
 
-        modelBuilder.Entity<VolunteerFollower>()
-            .HasOne(vf => vf.Followed)
-            .WithMany(v => v.Followed)
-            .HasForeignKey(vf => vf.FollowedId)
-            .OnDelete(DeleteBehavior.Restrict);
+    modelBuilder.Entity<VolunteerFollower>()
+        .HasKey(vf => new { vf.FollowerId, vf.FollowedId });
+
+    modelBuilder.Entity<VolunteerFollower>()
+        .HasOne(vf => vf.Follower)
+        .WithMany(v => v.Followers)
+        .HasForeignKey(vf => vf.FollowerId)
+        .HasPrincipalKey(v => v.Uid)
+        .OnDelete(DeleteBehavior.Restrict); // Optional
+
+    modelBuilder.Entity<VolunteerFollower>()
+        .HasOne(vf => vf.Followed)
+        .WithMany(v => v.Followed)
+        .HasForeignKey(vf => vf.FollowedId)
+        .HasPrincipalKey(v => v.Id) // Int primary key
+        .OnDelete(DeleteBehavior.Restrict); // Optional
 
         // ------------------------
         // Organization ↔ Cause
