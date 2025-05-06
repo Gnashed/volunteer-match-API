@@ -125,3 +125,11 @@
 /Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/obj/Debug/net8.0/VolunteerMatch.Tests.genruntimeconfig.cache
 /Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/obj/Debug/net8.0/ref/VolunteerMatch.Tests.dll
 /Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/obj/Debug/net8.0/VolunteerMatch.Tests.sourcelink.json
+/Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/Users/tion/Development/nss/workspace/swe-group-work/VolunteerMatch/VolunteerMatch.Tests/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
