@@ -31,7 +31,7 @@ services:
       - JWT__ISSUER=VolunteerMatch
       - JWT__AUDIENCE=VolunteerMatchClient
       - ENABLESWAGGER=true
-      - VOLUNTEERMATCH_DB_CONNECTION_STRING=Host=db;Port=5432;Username=postgres;Password=g4l123456;Database=VolunteerMatch
+      - VOLUNTEERMATCH_DB_CONNECTION_STRING
     depends_on:
       - db
 volumes:

@@ -20,6 +20,13 @@ var jwtKey = Environment.GetEnvironmentVariable("JWT:KEY")
 var jwtIssuer = builder.Configuration["JWT:ISSUER"] ?? "VolunteerMatch";
 var jwtAudience = builder.Configuration["JWT:AUDIENCE"] ?? "VolunteerMatchClient";
 
+// Supports both local development and dev. with Docker environment.
+var connectionString = Environment.GetEnvironmentVariable("VOLUNTEERMATCH_DB_CONNECTION_STRING")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new Exception("Missing DB connection string");
+builder.Services.AddDbContext<VolunteerMatchDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
 // Just like the other services in Program.cs, we're adding JWT authentication to the service container.
 // Here we're specifically setting the default authentication and challenge scheme to JWT Bearer.
 builder.Services.AddAuthentication(options =>
@@ -69,8 +76,8 @@ builder.Services.AddCors(options =>
 // allows passing date times without time zone data 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-// allows our api endpoints to access the database through Entity Framework Core
-builder.Services.AddNpgsql<VolunteerMatchDbContext>(builder.Configuration["VOLUNTEERMATCH_DB_CONNECTION_STRING"]);
+// allows our api endpoints to access the database through Entity Framework Core. This was used prior to using Docker.
+// builder.Services.AddNpgsql<VolunteerMatchDbContext>(builder.Configuration["VOLUNTEERMATCH_DB_CONNECTION_STRING"]);
 
 // Set the JSON serializer options
 builder.Services.AddControllers().AddJsonOptions(options =>
