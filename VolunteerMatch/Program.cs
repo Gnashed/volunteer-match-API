@@ -105,11 +105,17 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Automatic migrations on startup
+// This is a lifecycle hook that automatically runs migrations on startup. It ensures Postgres database schema is up to ...
+// date with our latest EF Core migrations.
+// The line below creates a new service scope. It's created temporarily to resolve scoped services like DbContext. The ...
+// scope is disposed of when finished (this is achieved with 'using'). 
 using (var scope = app.Services.CreateScope())
 {
+    // The service provider retrieves an instance of our EF Core DbContext. An exception is thrown if service isn't registered.
     var db = scope.ServiceProvider.GetRequiredService<VolunteerMatchDbContext>();
-    db.Database.Migrate(); // apply migrations
+    // apply migrations. Equivalent to `dotnet ef database update`. EF Core compares the current db schema to the latest ...
+    // migrations and execute SQL commands to update the schema. If db doesn't exist at all, EF Core creates it.
+    db.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.
