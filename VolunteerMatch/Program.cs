@@ -14,11 +14,11 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // The following keys are read .env (for Docker) and from config (user secrets in this case for local development).
-var jwtKey = Environment.GetEnvironmentVariable("JWT:Key")
-             ?? builder.Configuration["JWT:Key"]
+var jwtKey = Environment.GetEnvironmentVariable("JWT:KEY")
+             ?? builder.Configuration["JWT:KEY"]
              ?? throw new Exception("Missing JWT key");
-var jwtIssuer = builder.Configuration["JWT:Issuer"] ?? "VolunteerMatch";
-var jwtAudience = builder.Configuration["JWT:Audience"] ?? "VolunteerMatchClient";
+var jwtIssuer = builder.Configuration["JWT:ISSUER"] ?? "VolunteerMatch";
+var jwtAudience = builder.Configuration["JWT:AUDIENCE"] ?? "VolunteerMatchClient";
 
 // Just like the other services in Program.cs, we're adding JWT authentication to the service container.
 // Here we're specifically setting the default authentication and challenge scheme to JWT Bearer.
@@ -70,7 +70,7 @@ builder.Services.AddCors(options =>
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // allows our api endpoints to access the database through Entity Framework Core
-builder.Services.AddNpgsql<VolunteerMatchDbContext>(builder.Configuration["VolunteerMatchDbConnectionString"]);
+builder.Services.AddNpgsql<VolunteerMatchDbContext>(builder.Configuration["VOLUNTEERMATCH_DB_CONNECTION_STRING"]);
 
 // Set the JSON serializer options
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -98,8 +98,15 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+// Automatic migrations on startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<VolunteerMatchDbContext>();
+    db.Database.Migrate(); // apply migrations
+}
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || builder.Configuration["EnableSwagger"] == "true")
+if (app.Environment.IsDevelopment() || builder.Configuration["ENABLESWAGGER"] == "true")
 {
     app.UseSwagger();
     app.UseSwaggerUI();
