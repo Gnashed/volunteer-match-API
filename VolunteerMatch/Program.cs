@@ -13,8 +13,10 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// The following keys are read from config (user secrets in this case).
-var jwtKey = builder.Configuration["JWT:Key"] ?? throw new Exception("Missing JWT key");
+// The following keys are read .env (for Docker) and from config (user secrets in this case for local development).
+var jwtKey = Environment.GetEnvironmentVariable("JWT:Key")
+             ?? builder.Configuration["JWT:Key"]
+             ?? throw new Exception("Missing JWT key");
 var jwtIssuer = builder.Configuration["JWT:Issuer"] ?? "VolunteerMatch";
 var jwtAudience = builder.Configuration["JWT:Audience"] ?? "VolunteerMatchClient";
 
@@ -97,7 +99,7 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || builder.Configuration["EnableSwagger"] == "true")
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -108,7 +110,6 @@ app.UseCors();
 // Validates JWTs issued to clients.
 app.UseAuthentication();    // Validates the JWT
 app.UseAuthorization();     // Enforces the `[authorize]` rules.
-app.UseHttpsRedirection();
 
 // ASP.NET Core will scan for controller endpoints and expose them. W/o this line, the controllers are not registered
 // and Swagger won't see them.
