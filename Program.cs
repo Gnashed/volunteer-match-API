@@ -128,12 +128,32 @@ app.MapGet("/volunteers/{id}", async (int id, VolunteerMatchDbContext db) =>
 })
    .WithName("GetVolunteerById");
 
+// Full volunteer data (GET)
 app.MapGet("/volunteers/uid/{uid}", async (string uid, VolunteerMatchDbContext db) =>
 {
     var v = await db.Volunteers.FirstOrDefaultAsync(x => x.Uid == uid);
     return v is not null ? Results.Ok(v) : Results.NotFound();
 })
-   .WithName("GetVolunteerByUid");
+.WithName("GetVolunteerByUid");
+
+// Only volunteerId (POST)
+app.MapPost("/volunteers/uid/{uid}/id", async (string uid, VolunteerMatchDbContext db) =>
+{
+    var volunteerId = await db.Volunteers
+                               .Where(x => x.Uid == uid)
+                               .Select(v => v.Id)
+                               .FirstOrDefaultAsync();
+    if (volunteerId != 0)
+    {
+        return Results.Ok(new { volunteerId });
+    }
+    else
+    {
+        return Results.NotFound("Volunteer not found");
+    }
+})
+.WithName("GetVolunteerIdByUid");
+
 
 app.MapGet("/volunteers/{volunteerId}/followed-organizations", async (int volunteerId, VolunteerMatchDbContext db) =>
 {
